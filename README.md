@@ -1,10 +1,10 @@
 # numpy_stubs: experimental typing stubs for NumPy
 
 This repository exists for developing [PEP 484](https://www.python.org/dev/peps/pep-0484/)
-compatible typing annotations for NumPy.
+compatible typing annotations for [NumPy](https://github.com/numpy/numpy).
 
-It will eventually be released as a separate "numpy_stubs" package on PyPI per
-[PEP 561](https://www.python.org/dev/peps/pep-0561/). This will let us iterate
+It will be released as a separate "numpy_stubs" package on PyPI per [PEP
+561](https://www.python.org/dev/peps/pep-0561/). This will let us iterate
 rapidly on experimental type annotations without coupling to NumPy's release
 cycle.
 
@@ -20,3 +20,6 @@ The plan (help wanted!):
 3. Add support for shapes in ndarray type-annotations.
    - This will first require defining a broader (Python wide) standard for
      typing array shapes, and likely entail writing a PEP.
+
+Eventually, once development has stabilized, we expect to merge these type stubs
+into the main NumPy repository.
