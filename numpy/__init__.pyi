@@ -2,6 +2,8 @@
 #
 from typing import Any, Tuple, Optional
 
+from numpy.core._internal import _ctypes
+
 class dtype: pass
 _dtype = dtype      # for ndarray type
 
@@ -51,7 +53,7 @@ class ndarray:
     ndim: int
     shape: Tuple[int, ...]
     strides: Tuple[int, ...]
-    ctypes: Any
+    ctypes: _ctypes
     base: Optional[ndarray]
 
 
