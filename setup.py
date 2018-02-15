@@ -13,6 +13,6 @@ setup(
     # PEP 561 requires these
     install_requires=['numpy~=1.13.0'],
     package_data={
-    	'numpy': 'py.typed'
+        'numpy': 'py.typed'
     },
 )
