@@ -9,7 +9,7 @@ class dtype:
     alignment: int
     byteorder: str
     char: str
-    descr: List[Tuple[str, str]]
+    descr: List[Union[Tuple[str, str], Tuple[str, str, Tuple[int, ...]]]]
     fields: Optional[Mapping[str, Union[Tuple[dtype, int], Tuple[dtype, int, str]]]]
     flags: int
     hasobject: bool
@@ -26,7 +26,7 @@ class dtype:
     subdtype: Optional[Tuple[dtype, Tuple[int, ...]]]
 
 
-    def newbyteoder(self, new_order:str = ...): dtype
+    def newbyteorder(self, new_order: str = ...): dtype
 
     str: builtins.str
     type: builtins.type
@@ -35,10 +35,10 @@ class dtype:
     def base(self) -> dtype: ...
 
 
-_dtype = dtype      # for ndarray type
+_dtype_class = dtype      # for ndarray type
 
 
-class flagsobj:
+class _flagsobj:
     aligned: bool
     behaved: bool
     c_contiguous: bool
@@ -72,9 +72,9 @@ class flatiter:
 class ndarray:
     T: ndarray
     data: memoryview
-    dtype: _dtype
-    flags: flagsobj
-    flat: Any
+    dtype: _dtype_class
+    flags: _flagsobj
+    flat: flatiter
     imag: ndarray
     real: ndarray
     size: int
