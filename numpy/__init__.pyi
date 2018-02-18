@@ -1,10 +1,40 @@
 # very simple, just enough to start running tests
 #
-from typing import Any, Tuple, Optional
+import builtins
+from typing import Any, Mapping, List, Optional, Tuple, Union
 
 from numpy.core._internal import _ctypes
 
-class dtype: pass
+class dtype:
+    alignment: int
+    byteorder: str
+    char: str
+    descr: List[Tuple[str, str]]
+    fields: Optional[Mapping[str, Union[Tuple[dtype, int], Tuple[dtype, int, str]]]]
+    flags: int
+    hasobject: bool
+    isbuiltin: int
+    isnative: bool
+    isalignedstruct: bool
+    itemsize: int
+    kind: str
+    name: str
+    names: Optional[Tuple[str, ...]]
+    num: int
+    shape: Tuple[int, ...]
+    ndim: int
+    subdtype: Optional[Tuple[dtype, Tuple[int, ...]]]
+
+
+    def newbyteoder(self, new_order:str = ...): dtype
+
+    str: builtins.str
+    type: builtins.type
+
+    @property
+    def base(self) -> dtype: ...
+
+
 _dtype = dtype      # for ndarray type
 
 
