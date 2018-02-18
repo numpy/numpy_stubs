@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='numpy_stubs',
+    name='numpy-stubs',
     maintainer="NumPy Developers",
     maintainer_email="numpy-discussion@python.org",
     description="PEP 561 type stubs for numpy",
@@ -11,8 +11,8 @@ setup(
     packages=find_packages(),
 
     # PEP 561 requires these
-    install_requires=['numpy~=1.13.0'],
+    install_requires=['numpy~=1.14.0'],
     package_data={
-    	'numpy': 'py.typed'
+        'numpy': 'py.typed'
     },
 )

@@ -1,0 +1,17 @@
+language: python
+python: 3.6
+
+notifications:
+  email: false
+
+install:
+- pip install -r test-requirements.txt
+- if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install flake8-pyi==17.3.0; fi
+
+script:
+- flake8
+- MYPYPATH="." mypy tests/test_simple.py
+
+cache:
+  directories:
+  - "$HOME/.cache/pip"
