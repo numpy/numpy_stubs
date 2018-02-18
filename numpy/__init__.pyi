@@ -56,6 +56,9 @@ class dtype:
     def kind(self) -> str: ...
 
     @property
+    def metadata(self) -> Optional[Mapping[str, Any]]: ...
+
+    @property
     def name(self) -> str: ...
 
     @property
