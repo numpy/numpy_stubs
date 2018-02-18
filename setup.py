@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='numpy_stubs',
+    name='numpy-stubs',
     maintainer="NumPy Developers",
     maintainer_email="numpy-discussion@python.org",
     description="PEP 561 type stubs for numpy",
