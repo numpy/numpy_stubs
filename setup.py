@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
 
     # PEP 561 requires these
-    install_requires=['numpy~=1.13.0'],
+    install_requires=['numpy~=1.14.0'],
     package_data={
         'numpy': 'py.typed'
     },
