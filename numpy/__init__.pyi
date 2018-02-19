@@ -5,6 +5,8 @@ from typing import Any, Mapping, List, Optional, Tuple, Union
 
 from numpy.core._internal import _ctypes
 
+_Shape = Tuple[int, ...]
+
 class dtype:
     names: Optional[Tuple[str, ...]]
 
@@ -23,7 +25,7 @@ class dtype:
     @property
     def descr(self) -> List[Union[
         Tuple[str, str],
-        Tuple[str, str, Tuple[int, ...]]]]: ...
+        Tuple[str, str, _Shape]]]: ...
 
     @property
     def fields(self) -> Optional[Mapping[
@@ -62,13 +64,13 @@ class dtype:
     def num(self) -> int: ...
 
     @property
-    def shape(self) -> Tuple[int, ...]: ...
+    def shape(self) -> _Shape: ...
 
     @property
     def ndim(self) -> int: ...
 
     @property
-    def subdtype(self) -> Optional[Tuple[dtype, Tuple[int, ...]]]: ...
+    def subdtype(self) -> Optional[Tuple[dtype, _Shape]]: ...
 
     def newbyteorder(self, new_order: str = ...) -> dtype: ...
 
@@ -132,7 +134,7 @@ class flatiter:
     def base(self) -> ndarray: ...
 
     @property
-    def coords(self) -> Tuple[int, ...]: ...
+    def coords(self) -> _Shape: ...
 
     @property
     def index(self) -> int: ...
@@ -146,7 +148,7 @@ class ndarray:
     dtype: _dtype_class
     imag: ndarray
     real: ndarray
-    shape: Tuple[int, ...]
+    shape: _Shape
     strides: Tuple[int, ...]
 
     @property
