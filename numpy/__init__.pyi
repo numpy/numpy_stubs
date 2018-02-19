@@ -7,9 +7,6 @@ from numpy.core._internal import _ctypes
 
 class dtype:
     names: Optional[Tuple[str, ...]]
-    updateifcopy: bool
-    writeable: bool
-    writebackifcopy: bool
 
     @property
     def alignment(self) -> int: ...
@@ -89,6 +86,9 @@ _dtype_class = dtype      # for ndarray type
 
 class _flagsobj:
     aligned: bool
+    updateifcopy: bool
+    writeable: bool
+    writebackifcopy: bool
 
     @property
     def behaved(self) -> bool: ...
