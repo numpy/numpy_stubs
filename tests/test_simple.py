@@ -38,7 +38,8 @@ array + 1
 array_scalar = np.array(1)
 int(array_scalar)
 float(array_scalar)
-complex(array_scalar)
+# currently does not work due to https://github.com/python/typeshed/issues/1904
+# complex(array_scalar)
 bytes(array_scalar)
 abs(array_scalar)
 operator.index(array_scalar)
