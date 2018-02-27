@@ -1,7 +1,7 @@
 import builtins
 from typing import (Any, Iterable, List, Optional, Mapping, Sized,
                     SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes,
-                    SupportsAbs, SupportsRound, Tuple, Union,)
+                    SupportsAbs, Tuple, Union,)
 
 from numpy.core._internal import _ctypes
 
