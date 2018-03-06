@@ -15,10 +15,10 @@ _Shape = Tuple[int, ...]
 # Anything that can be coerced into numpy.dtype. To avoid recursive
 # definitions, any nested fields are required to be castable to a dtype object
 # are typed as Any.
-# Refernce: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# Reference: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 _ConvertibleToDtype = Union[
     type,  # TODO: enumerate np.generic types and Python scalars
-    # TODO: add a protocol for anything with a dtype attribute
+    # TODO: add a protocol for anything with a dtype attribute?
     str,
     Tuple[Any, int],
     Tuple[Any, _Shape],
@@ -225,7 +225,9 @@ class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
     if sys.version_info[0] < 3:
         def __oct__(self) -> str: ...
         def __hex__(self) -> str: ...
-    def __nonzero__(self) -> bool: ...
+        def __nonzero__(self) -> bool: ...
+    else:
+        def __bool__(self) -> bool: ...
     def __bytes__(self) -> bytes: ...
 
     def __index__(self) -> int: ...
