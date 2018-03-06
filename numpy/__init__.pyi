@@ -18,15 +18,24 @@ _Shape = Tuple[int, ...]
 # Reference: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 _DtypeLike = Union[
     dtype,
-    type,  # TODO: enumerate np.generic types and Python scalars
-    # TODO: add a protocol for anything with a dtype attribute?
+    # default data type
     None,
+    # array-scalar types and generic types
+    type,  # TODO: enumerate these when we add type hints for numpy scalars
+    # TODO: add a protocol for anything with a dtype attribute
+    # character codes, type strings or comma-separated fields, e.g., 'float64'
     str,
+    # (flexible_dtype, itemsize)
     Tuple[Any, int],
+    # (fixed_dtype, shape)
     Tuple[Any, _Shape],
+    # [(field_name, field_dtype, field_shape), ...]
     List[Union[Tuple[Union[str, Tuple[str, str]], Any],
                Tuple[Union[str, Tuple[str, str]], Any, _Shape]]],
+    # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
+    #  'itemsize': ...} or {'field1': ..., 'field2': ..., ...}
     Dict[str, Any],
+    # (base_dtype, new_dtype)
     Tuple[Any, Any]]
 
 
