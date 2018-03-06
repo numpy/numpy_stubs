@@ -1,7 +1,7 @@
 import builtins
 
 from typing import (
-    Any, Dict, Iterable, List, Optional, Mapping, Sized,
+    Any, Dict, Iterable, List, Optional, Mapping, Sequence, Sized,
     SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes, SupportsAbs,
     Tuple, Union,
 )
@@ -12,13 +12,16 @@ from numpy.core._internal import _ctypes
 
 _Shape = Tuple[int, ...]
 
-# Anything that can be coerced into numpy.dtype. To avoid recursive
-# definitions, any nested fields are required to be castable to a dtype object
-# are typed as Any.
+# Anything that can be coerced to a shape tuple
+_ShapeLike = Union[int, Sequence[int]]
+
+_DtypeLikeNested = Any  # TODO: wait for support for recursive types
+
+# Anything that can be coerced into numpy.dtype.
 # Reference: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 _DtypeLike = Union[
     dtype,
-    # default data type
+    # default data type (float64)
     None,
     # array-scalar types and generic types
     type,  # TODO: enumerate these when we add type hints for numpy scalars
@@ -26,17 +29,19 @@ _DtypeLike = Union[
     # character codes, type strings or comma-separated fields, e.g., 'float64'
     str,
     # (flexible_dtype, itemsize)
-    Tuple[Any, int],
+    Tuple[_DtypeLikeNested, int],
     # (fixed_dtype, shape)
-    Tuple[Any, _Shape],
+    Tuple[_DtypeLikeNested, _ShapeLike],
     # [(field_name, field_dtype, field_shape), ...]
-    List[Union[Tuple[Union[str, Tuple[str, str]], Any],
-               Tuple[Union[str, Tuple[str, str]], Any, _Shape]]],
+    List[Union[
+        Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested],
+        Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested, _ShapeLike]]],
     # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
     #  'itemsize': ...} or {'field1': ..., 'field2': ..., ...}
+    # TODO: use TypedDict when/if it's officially supported
     Dict[str, Any],
     # (base_dtype, new_dtype)
-    Tuple[Any, Any]]
+    Tuple[_DtypeLikeNested, _DtypeLikeNested]]
 
 
 class dtype:
