@@ -15,6 +15,7 @@ array.dtype == float
 # Dtype construction
 np.dtype(float)
 np.dtype(np.float64)
+np.dtype(None)
 np.dtype('float64')
 np.dtype(np.dtype(float))
 np.dtype(('U', 10))

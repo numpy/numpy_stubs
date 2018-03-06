@@ -19,6 +19,7 @@ _Shape = Tuple[int, ...]
 _ConvertibleToDtype = Union[
     type,  # TODO: enumerate np.generic types and Python scalars
     # TODO: add a protocol for anything with a dtype attribute?
+    None,
     str,
     Tuple[Any, int],
     Tuple[Any, _Shape],
