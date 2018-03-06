@@ -93,7 +93,7 @@ array % 1
 1 % array
 array %= 1
 
-# Overloading divmod() is not yet support in typeshed:
+# Overloading divmod() is not yet supported in typeshed:
 # https://github.com/python/typing/issues/541
 # divmod(array, 1)
 # divmod(1, array)
