@@ -12,6 +12,19 @@ ndarray_func(np.array([1, 2]))
 array == 1
 array.dtype == float
 
+# Dtype construction
+np.dtype(float)
+np.dtype(np.float64)
+np.dtype('float64')
+np.dtype(np.dtype(float))
+np.dtype(('U', 10))
+np.dtype((np.int32, (2, 2)))
+np.dtype([('R', 'u1'), ('G', 'u1'), ('B', 'u1')])
+np.dtype([('R', 'u1', (2, 2))])
+np.dtype({'col1': ('U10', 0), 'col2': ('float32', 10)})
+np.dtype((np.int32, {'real': (np.int16, 0), 'imag': (np.int16, 2)}))
+np.dtype((np.int32, (np.int8, 4)))
+
 # Iteration and indexing
 def iterable_func(x: Iterable) -> Iterable:
     return x

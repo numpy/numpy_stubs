@@ -1,16 +1,40 @@
 import builtins
-from typing import (Any, Iterable, List, Optional, Mapping, Sized,
-                    SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes,
-                    SupportsAbs, Tuple, Union,)
+
+from typing import (
+    Any, Dict, Iterable, List, Optional, Mapping, Sized,
+    SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes, SupportsAbs,
+    Tuple, Union,
+)
+
 import sys
 
 from numpy.core._internal import _ctypes
 
 _Shape = Tuple[int, ...]
 
+# Anything that can be coerced into numpy.dtype. To avoid recursive
+# definitions, any nested fields are required to be castable to a dtype object
+# are typed as Any.
+# Refernce: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+_ConvertibleToDtype = Union[
+    type,  # TODO: enumerate np.generic types and Python scalars
+    # TODO: add a protocol for anything with a dtype attribute
+    str,
+    Tuple[Any, int],
+    Tuple[Any, _Shape],
+    List[Union[Tuple[Union[str, Tuple[str, str]], Any],
+               Tuple[Union[str, Tuple[str, str]], Any, _Shape]]],
+    Dict[str, Any],
+    Tuple[Any, Any]]
+
 
 class dtype:
     names: Optional[Tuple[str, ...]]
+
+    def __init__(self,
+                 obj: Union[dtype, _ConvertibleToDtype],
+                 align: bool = ...,
+                 copy: bool = ...) -> None: ...
 
     @property
     def alignment(self) -> int: ...
@@ -85,7 +109,8 @@ class dtype:
     def type(self) -> builtins.type: ...
 
 
-_dtype_class = dtype      # for ndarray type
+_DtypeLike = Union[dtype, _ConvertibleToDtype]
+_Dtype = dtype  # to avoid name conflicts with ndarray.dtype
 
 
 class _flagsobj:
@@ -149,7 +174,7 @@ class flatiter:
 class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
               SupportsBytes, SupportsAbs[Any]):
 
-    dtype: _dtype_class
+    dtype: _Dtype
     imag: ndarray
     real: ndarray
     shape: _Shape
@@ -290,7 +315,7 @@ class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
 
 def array(
     object: object,
-    dtype: _dtype_class = ...,
+    dtype: _DtypeLike = ...,
     copy: bool = ...,
     subok: bool = ...,
     ndmin: int = ...) -> ndarray: ...
