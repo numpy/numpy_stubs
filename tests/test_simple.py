@@ -45,18 +45,90 @@ array_2d[:2, :2] = 0
 # Other special methods
 len(array)
 str(array)
-array + 1
--array
-
 array_scalar = np.array(1)
 int(array_scalar)
 float(array_scalar)
 # currently does not work due to https://github.com/python/typeshed/issues/1904
 # complex(array_scalar)
 bytes(array_scalar)
-abs(array_scalar)
 operator.index(array_scalar)
 bool(array_scalar)
+
+# comparisons
+array < 1
+array <= 1
+array == 1
+array != 1
+array > 1
+array >= 1
+1 < array
+1 <= array
+1 == array
+1 != array
+1 > array
+1 >= array
+
+# binary arithmetic
+array + 1
+1 + array
+array += 1
+
+array - 1
+1 - array
+array -= 1
+
+array * 1
+1 * array
+array *= 1
+
+array / 1
+1 / array
+array /= 1
+
+array // 1
+1 // array
+array //= 1
+
+array % 1
+1 % array
+array %= 1
+
+# Overloading divmod() is not yet support in typeshed:
+# https://github.com/python/typing/issues/541
+# divmod(array, 1)
+# divmod(1, array)
+
+array ** 1
+1 ** array
+array **= 1
+
+array << 1
+1 << array
+array <<= 1
+
+array >> 1
+1 >> array
+array >>= 1
+
+array & 1
+1 & array
+array &= 1
+
+array ^ 1
+1 ^ array
+array ^= 1
+
+array | 1
+1 | array
+array |= 1
+
+array @ array
+
+# unary arithmetic
+-array
++array
+abs(array)
+~array
 
 # Other methods
 np.array([1, 2]).transpose()
