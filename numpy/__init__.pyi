@@ -16,7 +16,8 @@ _Shape = Tuple[int, ...]
 # definitions, any nested fields are required to be castable to a dtype object
 # are typed as Any.
 # Reference: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-_ConvertibleToDtype = Union[
+_DtypeLike = Union[
+    dtype,
     type,  # TODO: enumerate np.generic types and Python scalars
     # TODO: add a protocol for anything with a dtype attribute?
     None,
@@ -33,7 +34,7 @@ class dtype:
     names: Optional[Tuple[str, ...]]
 
     def __init__(self,
-                 obj: Union[dtype, _ConvertibleToDtype],
+                 obj: _DtypeLike,
                  align: bool = ...,
                  copy: bool = ...) -> None: ...
 
@@ -110,7 +111,6 @@ class dtype:
     def type(self) -> builtins.type: ...
 
 
-_DtypeLike = Union[dtype, _ConvertibleToDtype]
 _Dtype = dtype  # to avoid name conflicts with ndarray.dtype
 
 
