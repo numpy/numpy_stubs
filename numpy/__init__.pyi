@@ -3,7 +3,7 @@ import builtins
 from typing import (
     Any, Dict, Iterable, List, Optional, Mapping, Sequence, Sized,
     SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes, SupportsAbs,
-    Tuple, Union,
+    Text, Tuple, Union,
 )
 
 import sys
@@ -37,11 +37,20 @@ _DtypeLike = Union[
         Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested],
         Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested, _ShapeLike]]],
     # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
-    #  'itemsize': ...} or {'field1': ..., 'field2': ..., ...}
+    #  'itemsize': ...}
     # TODO: use TypedDict when/if it's officially supported
-    Dict[str, Any],
+    Dict[str, Union[
+        Sequence[str],  # names
+        Sequence[_DtypeLikeNested],  # formats
+        Sequence[int],  # offsets
+        Sequence[Union[bytes, Text, None]],  # titles
+        int,  # itemsize
+    ]],
+    # {'field1': ..., 'field2': ..., ...}
+    Dict[str, Tuple[_DtypeLikeNested, int]],
     # (base_dtype, new_dtype)
-    Tuple[_DtypeLikeNested, _DtypeLikeNested]]
+    Tuple[_DtypeLikeNested, _DtypeLikeNested],
+]
 
 
 class dtype:
@@ -241,9 +250,12 @@ class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
         def __oct__(self) -> str: ...
         def __hex__(self) -> str: ...
         def __nonzero__(self) -> bool: ...
+        def __unicode__(self) -> unicode: ...
     else:
         def __bool__(self) -> bool: ...
-    def __bytes__(self) -> bytes: ...
+        def __bytes__(self) -> bytes: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
 
     def __index__(self) -> int: ...
 
