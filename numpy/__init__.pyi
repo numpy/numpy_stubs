@@ -198,17 +198,19 @@ class flatiter:
 class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
               SupportsBytes, SupportsAbs[Any]):
 
-    dtype: _Dtype
     imag: ndarray
     real: ndarray
-    shape: _Shape
-    strides: Tuple[int, ...]
 
     @property
     def T(self) -> ndarray: ...
 
     @property
     def base(self) -> Optional[ndarray]: ...
+
+    @property
+    def dtype(self) -> _Dtype: ...
+    @dtype.setter
+    def dtype(self, value: _DtypeLike): ...
 
     @property
     def ctypes(self) -> _ctypes: ...
@@ -233,6 +235,16 @@ class ndarray(Iterable, Sized, SupportsInt, SupportsFloat, SupportsComplex,
 
     @property
     def ndim(self) -> int: ...
+
+    @property
+    def shape(self) -> _Shape: ...
+    @shape.setter
+    def shape(self, value: _ShapeLike): ...
+
+    @property
+    def strides(self) -> _Shape: ...
+    @strides.setter
+    def strides(self, value: _ShapeLike): ...
 
     # Many of these special methods are irrelevant currently, since protocols
     # aren't supported yet. That said, I'm adding them for completeness.
