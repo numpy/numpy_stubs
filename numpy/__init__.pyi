@@ -195,9 +195,9 @@ class flatiter:
     def __next__(self) -> Any: ...
 
 
-_ArraySelf = TypeVar("_ArraySelf", bound=_ArrayLike)
-class _ArrayLike(SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes,
-                 SupportsAbs[Any]):
+_ArraySelf = TypeVar("_ArraySelf", bound=_ArrayOrScalarCommon)
+class _ArrayOrScalarCommon(SupportsInt, SupportsFloat, SupportsComplex,
+                           SupportsBytes, SupportsAbs[Any]):
     @property
     def T(self: _ArraySelf) -> _ArraySelf: ...
 
@@ -325,7 +325,7 @@ class _ArrayLike(SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes,
     def __getattr__(self, name) -> Any: ...
 
 
-class ndarray(_ArrayLike, Iterable, Sized):
+class ndarray(_ArrayOrScalarCommon, Iterable, Sized):
     real: ndarray
     imag: ndarray
 
@@ -360,9 +360,10 @@ class ndarray(_ArrayLike, Iterable, Sized):
     def __contains__(self, key) -> bool: ...
     def __index__(self) -> int: ...
 
-class generic(_ArrayLike):
+class generic(_ArrayOrScalarCommon):
     @property
     def base(self) -> None: ...
+
 class _real_generic(generic):
     @property
     def real(self: _ArraySelf) -> _ArraySelf: ...
