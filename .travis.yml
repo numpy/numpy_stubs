@@ -10,7 +10,7 @@ install:
 
 script:
 - flake8
-- MYPYPATH="." mypy tests/test_simple.py
+- MYPYPATH="." mypy tests
 
 cache:
   directories:

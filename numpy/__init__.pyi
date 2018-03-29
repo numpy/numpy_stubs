@@ -3,7 +3,7 @@ import builtins
 from typing import (
     Any, Dict, Iterable, List, Optional, Mapping, Sequence, Sized,
     SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes, SupportsAbs,
-    Text, Tuple, TypeVar, Union,
+    Text, Tuple, Type, TypeVar, Union,
 )
 
 import sys
@@ -131,7 +131,7 @@ class dtype:
     def str(self) -> builtins.str: ...
 
     @property
-    def type(self) -> builtins.type: ...
+    def type(self) -> Type[generic]: ...
 
 
 _Dtype = dtype  # to avoid name conflicts with ndarray.dtype
