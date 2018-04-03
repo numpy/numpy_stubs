@@ -56,7 +56,7 @@ def test_fail(path):
             assert lineno in errors, f'Extra error "{marker}"'
             assert marker in errors[lineno]
         else:
-            assert "# E:" in target_line, f'Error "{errors[lineno]}" not found'
+            pytest.fail(f'Error {repr(errors[lineno])} not found')
 
 
 @pytest.mark.parametrize("path", get_test_cases(REVEAL_DIR))
