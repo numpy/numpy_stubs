@@ -1,4 +1,16 @@
 from setuptools import setup, find_packages
+import os
+import sys
+
+
+def find_stubs(package):
+    stubs = []
+    for root, dirs, files in os.walk(package):
+        for file in files:
+            path = os.path.join(root, file).replace(package + os.sep, '', 1)
+            stubs.append(path)
+    return {package: stubs}
+
 
 setup(
     name='numpy-stubs',
@@ -8,11 +20,8 @@ setup(
     url="http://www.numpy.org",
     license='BSD',
     version="0.0.1",
-    packages=find_packages(),
-
+    packages=['numpy-stubs'],
     # PEP 561 requires these
     install_requires=['numpy~=1.14.0'],
-    package_data={
-        'numpy': 'py.typed'
-    },
+    package_data=find_stubs('numpy-stubs'),
 )

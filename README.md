@@ -5,7 +5,7 @@
 This repository exists for developing [PEP 484](https://www.python.org/dev/peps/pep-0484/)
 compatible typing annotations for [NumPy](https://github.com/numpy/numpy).
 
-It will be released as a separate "numpy_stubs" package on PyPI per [PEP
+It will be released as a separate "numpy-stubs" package on PyPI per [PEP
 561](https://www.python.org/dev/peps/pep-0561/). This will let us iterate
 rapidly on experimental type annotations without coupling to NumPy's release
 cycle.

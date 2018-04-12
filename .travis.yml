@@ -6,6 +6,7 @@ notifications:
 
 install:
 - pip install -r test-requirements.txt
+- pip install .
 
 script:
 - flake8

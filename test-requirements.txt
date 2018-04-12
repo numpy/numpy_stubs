@@ -1,4 +1,4 @@
 flake8==3.3.0
 flake8-pyi==17.3.0
 pytest==3.4.2
-mypy==0.580.0
+mypy==0.590
