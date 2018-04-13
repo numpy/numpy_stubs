@@ -1,4 +1,4 @@
-# numpy_stubs: experimental typing stubs for NumPy
+# numpy-stubs: experimental typing stubs for NumPy
 
 [![Build Status](https://travis-ci.org/numpy/numpy_stubs.svg?branch=master)](https://travis-ci.org/numpy/numpy_stubs)
 
