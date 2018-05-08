@@ -3,37 +3,48 @@ import os
 import pytest
 from mypy import api
 
-ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
-PASS_DIR = os.path.join(os.path.dirname(__file__), "pass")
-FAIL_DIR = os.path.join(os.path.dirname(__file__), "fail")
-REVEAL_DIR = os.path.join(os.path.dirname(__file__), "reveal")
-
-os.environ['MYPYPATH'] = ROOT_DIR
+TESTS_DIR = os.path.dirname(__file__)
+PASS_DIR = os.path.join(TESTS_DIR, "pass")
+FAIL_DIR = os.path.join(TESTS_DIR, "fail")
+REVEAL_DIR = os.path.join(TESTS_DIR, "reveal")
 
 
 def get_test_cases(directory):
     for root, __, files in os.walk(directory):
         for fname in files:
             if os.path.splitext(fname)[-1] == ".py":
-                # yield relative path for nice py.test name
-                yield os.path.relpath(
-                    os.path.join(root, fname), start=directory)
+                fullpath = os.path.join(root, fname)
+                # Use relative path for nice py.test name
+                relpath = os.path.relpath(fullpath, start=directory)
+                skip_py2 = fname.endswith("_py3.py")
+
+                for py_version_number in (2, 3):
+                    if py_version_number == 2 and skip_py2:
+                        continue
+                    py2_arg = ['--py2'] if py_version_number == 2 else []
+
+                    yield pytest.param(
+                        fullpath,
+                        py2_arg,
+                        # Manually specify a name for the test
+                        id="{} - python{}".format(relpath, py_version_number),
+                    )
 
 
-@pytest.mark.parametrize("path", get_test_cases(PASS_DIR))
-def test_success(path):
-    stdout, stderr, exitcode = api.run([os.path.join(PASS_DIR, path)])
+@pytest.mark.parametrize("path,py2_arg", get_test_cases(PASS_DIR))
+def test_success(path, py2_arg):
+    stdout, stderr, exitcode = api.run([path] + py2_arg)
     assert stdout == ''
     assert exitcode == 0
 
 
-@pytest.mark.parametrize("path", get_test_cases(FAIL_DIR))
-def test_fail(path):
-    stdout, stderr, exitcode = api.run([os.path.join(FAIL_DIR, path)])
+@pytest.mark.parametrize("path,py2_arg", get_test_cases(FAIL_DIR))
+def test_fail(path, py2_arg):
+    stdout, stderr, exitcode = api.run([path] + py2_arg)
 
     assert exitcode != 0
 
-    with open(os.path.join(FAIL_DIR, path)) as fin:
+    with open(path) as fin:
         lines = fin.readlines()
 
     errors = {}
@@ -59,11 +70,11 @@ def test_fail(path):
             pytest.fail(f'Error {repr(errors[lineno])} not found')
 
 
-@pytest.mark.parametrize("path", get_test_cases(REVEAL_DIR))
-def test_reveal(path):
-    stdout, stderr, exitcode = api.run([os.path.join(REVEAL_DIR, path)])
+@pytest.mark.parametrize("path,py2_arg", get_test_cases(REVEAL_DIR))
+def test_reveal(path, py2_arg):
+    stdout, stderr, exitcode = api.run([path] + py2_arg)
 
-    with open(os.path.join(REVEAL_DIR, path)) as fin:
+    with open(path) as fin:
         lines = fin.readlines()
 
     for error_line in stdout.split("\n"):

@@ -22,6 +22,9 @@ reveal_type(x)   # E: <type name>
 Right now, the error messages and types are must be **contained within
 corresponding mypy message**.
 
+Test files that end in `_py3.py` will only be type checked against Python 3.
+All other test files must be valid in both Python 2 and Python 3.
+
 ## Running the tests
 
 We use `py.test` to orchestrate our tests. You can just run:
@@ -34,6 +37,23 @@ to run the entire test suite. To run `mypy` on a specific file (which
 can be useful for debugging), you can also run:
 
 ```
-$ cd tests
-$ MYPYPATH=.. mypy <file_path>
+mypy <file_path>
 ```
+
+Note that for either of these commands, you must run:
+
+```
+pip install -r test-requirements.txt
+```
+
+for the version of python that you're going to be running `py.test` or `mypy`
+with. To ensure you're using the intended version of Python you can use
+`python -m` versions of these commands instead:
+
+```
+python -m pytest
+python -m mypy <file_path>
+python -m pip install -r test-requirements.txt
+```
+Due to how mypy reads type information in PEP 561 packages, you'll need
+to re-run the `pip install` command each time you change the stubs.

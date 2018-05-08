@@ -2,11 +2,12 @@
 import operator
 
 import numpy as np
-from typing import Iterable
+from typing import Iterable  # noqa: F401
 
 # Basic checks
 array = np.array([1, 2])
-def ndarray_func(x: np.ndarray) -> np.ndarray:
+def ndarray_func(x):
+    # type: (np.ndarray) -> np.ndarray
     return x
 ndarray_func(np.array([1, 2]))
 array == 1
@@ -28,7 +29,8 @@ np.dtype((np.int32, {'real': (np.int16, 0), 'imag': (np.int16, 2)}))
 np.dtype((np.int32, (np.int8, 4)))
 
 # Iteration and indexing
-def iterable_func(x: Iterable) -> Iterable:
+def iterable_func(x):
+    # type: (Iterable) -> Iterable
     return x
 iterable_func(array)
 [element for element in array]
@@ -121,8 +123,6 @@ array ^= 1
 array | 1
 1 | array
 array |= 1
-
-array @ array
 
 # unary arithmetic
 -array

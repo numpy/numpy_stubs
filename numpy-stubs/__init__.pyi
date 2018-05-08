@@ -1,14 +1,32 @@
 import builtins
-
-from typing import (
-    Any, Dict, Iterable, List, Optional, Mapping, Sequence, Sized,
-    SupportsInt, SupportsFloat, SupportsComplex, SupportsBytes, SupportsAbs,
-    Text, Tuple, Type, TypeVar, Union,
-)
-
 import sys
 
 from numpy.core._internal import _ctypes
+from typing import (
+    Any,
+    Container,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Sized,
+    SupportsAbs,
+    SupportsComplex,
+    SupportsFloat,
+    SupportsInt,
+    Text,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+)
+
+if sys.version_info[0] < 3:
+    class SupportsBytes: ...
+else:
+    from typing import SupportsBytes
 
 _Shape = Tuple[int, ...]
 
@@ -325,7 +343,7 @@ class _ArrayOrScalarCommon(SupportsInt, SupportsFloat, SupportsComplex,
     def __getattr__(self, name) -> Any: ...
 
 
-class ndarray(_ArrayOrScalarCommon, Iterable, Sized):
+class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     real: ndarray
     imag: ndarray
 
