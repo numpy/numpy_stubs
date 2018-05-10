@@ -27,6 +27,17 @@ All other test files must be valid in both Python 2 and Python 3.
 
 ## Running the tests
 
+To setup your test environment, cd into the root of the repo and run:
+
+
+```
+pip install -r test-requirements.txt
+pip install .
+```
+
+Note that due to how mypy reads type information in PEP 561 packages, you'll 
+need to re-run the `pip install .` command each time you change the stubs.
+
 We use `py.test` to orchestrate our tests. You can just run:
 
 ```
@@ -40,20 +51,13 @@ can be useful for debugging), you can also run:
 mypy <file_path>
 ```
 
-Note that for either of these commands, you must run:
+Note that it is assumed that all of these commands target the same 
+underlying Python interpreter. To ensure you're using the intended version of
+Python you can use `python -m` versions of these commands instead:
 
 ```
-pip install -r test-requirements.txt
-```
-
-for the version of python that you're going to be running `py.test` or `mypy`
-with. To ensure you're using the intended version of Python you can use
-`python -m` versions of these commands instead:
-
-```
+python -m pip install -r test-requirements.txt
+python -m pip install .
 python -m pytest
 python -m mypy <file_path>
-python -m pip install -r test-requirements.txt
 ```
-Due to how mypy reads type information in PEP 561 packages, you'll need
-to re-run the `pip install` command each time you change the stubs.

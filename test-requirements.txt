@@ -2,6 +2,3 @@ flake8==3.3.0
 flake8-pyi==17.3.0
 pytest==3.4.2
 mypy==0.590
-# This makes sure that the repo's stubs are accessible. Using MYPYPATH won't
-# work. See https://github.com/python/mypy/issues/5007 for more details.
-.
