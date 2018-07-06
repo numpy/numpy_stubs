@@ -1,7 +1,6 @@
 import builtins
 import sys
 
-from numpy.core._internal import _ctypes
 from typing import (
     Any,
     Container,
@@ -22,6 +21,9 @@ from typing import (
     TypeVar,
     Union,
 )
+
+from numpy.core._internal import _ctypes
+from . import random    # noqa
 
 if sys.version_info[0] < 3:
     class SupportsBytes: ...
