@@ -17,9 +17,12 @@ def get_test_cases(directory):
                 # Use relative path for nice py.test name
                 relpath = os.path.relpath(fullpath, start=directory)
                 skip_py2 = fname.endswith("_py3.py")
+                skip_py3 = fname.endswith("_py2.py")
 
                 for py_version_number in (2, 3):
                     if py_version_number == 2 and skip_py2:
+                        continue
+                    if py_version_number == 3 and skip_py3:
                         continue
                     py2_arg = ['--py2'] if py_version_number == 2 else []
 
