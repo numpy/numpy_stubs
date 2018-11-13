@@ -29,10 +29,16 @@ if sys.version_info[0] < 3:
 else:
     from typing import SupportsBytes
 
+# Used to type hint values that could be in `ndarray`
+_T = TypeVar("_T")
+
 _Shape = Tuple[int, ...]
 
 # Anything that can be coerced to a shape tuple
 _ShapeLike = Union[int, Sequence[int]]
+
+# Anything that mentioned as `array_like ` in  documentation
+_ArrayLike = Union[_T, Sequence[_T]]
 
 _DtypeLikeNested = Any  # TODO: wait for support for recursive types
 
@@ -386,6 +392,50 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def flatten(self, order: str=...) -> ndarray: ...
     def ravel(self, order: str=...) -> ndarray: ...
     def squeeze(self, axis: Union[int, Tuple[int, ...]]=...) -> ndarray: ...
+
+    # Item selection and manipulation
+    def take(self,
+             indices: _ShapeLike=...,
+             axis: int=...,
+             out: ndarray=...,
+             mode: str=...) -> ndarray: ...
+    def put(self, ind: _ShapeLike, v: _ArrayLike[Any], mode: str=...): ...
+    def repeat(self, repeats: _ShapeLike, axis: int=...) -> ndarray: ...
+    def choose(self,
+               choices: Union[Sequence[int], Sequence[Sequence[int]]],
+               out: ndarray=...,
+               mode: str=...) -> ndarray: ...
+    def sort(self,
+             axis: int=...,
+             kind: str=...,
+             order: Union[str, Sequence[str]]=...): ...
+    def argsort(self,
+                axis: Optional[int]=...,
+                kind: str=...,
+                order: Union[str, Sequence[str]]=...) -> ndarray: ...
+    def partition(self,
+                  kth: _ShapeLike,
+                  axis: int=...,
+                  kind: str=...,
+                  order: Union[str, Sequence[str]]=...): ...
+    def argpartition(self,
+                     kth: _ShapeLike,
+                     axis: Optional[int]=...,
+                     kind: str=...,
+                     order: Union[str, Sequence[str]]=...) -> ndarray: ...
+    def searchsorted(self,
+                     v: _ArrayLike[Any],
+                     side: str=...,
+                     sorter: _ArrayLike[int]=...) -> ndarray: ...
+    def nonzero(self) -> Tuple[ndarray, ...]: ...
+    def compress(self,
+                 condition: Union[Sequence[int], Sequence[bool]],
+                 axis: int=...,
+                 out: ndarray=...) -> ndarray: ...
+    def diagonal(self,
+                 offset: int=...,
+                 axis1: int=...,
+                 axis2: int=...) -> ndarray: ...
 
     # Many of these special methods are irrelevant currently, since protocols
     # aren't supported yet. That said, I'm adding them for completeness.
