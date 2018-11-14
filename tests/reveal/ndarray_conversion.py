@@ -35,9 +35,14 @@ reveal_type(nd.copy())  # E: numpy.ndarray
 reveal_type(nd.copy("C"))  # E: numpy.ndarray
 
 # view
+class SubArray(np.ndarray):
+    pass
+
 reveal_type(nd.view())  # E: numpy.ndarray
 reveal_type(nd.view(np.int64))  # E: numpy.ndarray
-reveal_type(nd.view(np.int64, np.matrix))  # E: numpy.ndarray
+# replace `Any` with `numpy.matrix` when `matrix` will be added to stubs
+reveal_type(nd.view(np.int64, np.matrix))  # E: Any
+reveal_type(nd.view(np.int64, SubArray))  # E: SubArray
 
 # getfield
 reveal_type(nd.getfield("float"))  # E: numpy.ndarray
