@@ -8,8 +8,7 @@ nd.item(1)
 nd.item(0, 1)
 nd.item((0, 1))
 
-# tolist
-nd.tolist()
+# tolist is pretty simple
 
 # itemset
 nd.itemset(3)  # `nd` should be one-element in runtime
@@ -35,8 +34,8 @@ nd.tofile("a.txt", sep="")
 nd.tofile("a.txt", "", "%s")
 nd.tofile("a.txt", format="%s")
 
-# dump
-nd.dump("a.txt")
+# dump is pretty simple
+# dumps is pretty simple
 
 # astype
 nd.astype("float")
@@ -88,5 +87,4 @@ nd.setflags(write=True, align=True)
 nd.setflags(True, True, False)
 nd.setflags(write=True, align=True, uic=False)
 
-# fill
-nd.fill(3)
+# fill is pretty simple

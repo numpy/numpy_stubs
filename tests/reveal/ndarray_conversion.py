@@ -12,24 +12,19 @@ reveal_type(nd.item((0, 1)))  # E: Any
 reveal_type(nd.tolist())  # E: builtins.list[Any]
 
 # itemset does not return a value
+# tostring is pretty simple
+# tobytes is pretty simple
 # tofile does not return a value
 # dump does not return a value
+# dumps is pretty simple
 
 # astype
 reveal_type(nd.astype("float"))  # E: numpy.ndarray
 reveal_type(nd.astype(float))  # E: numpy.ndarray
-
 reveal_type(nd.astype(float, "K"))  # E: numpy.ndarray
-reveal_type(nd.astype(float, order="K"))  # E: numpy.ndarray
-
 reveal_type(nd.astype(float, "K", "unsafe"))  # E: numpy.ndarray
-reveal_type(nd.astype(float, casting="unsafe"))  # E: numpy.ndarray
-
 reveal_type(nd.astype(float, "K", "unsafe", True))  # E: numpy.ndarray
-reveal_type(nd.astype(float, subok=True))  # E: numpy.ndarray
-
 reveal_type(nd.astype(float, "K", "unsafe", True, True))  # E: numpy.ndarray
-reveal_type(nd.astype(float, copy=True))  # E: numpy.ndarray
 
 # byteswap
 reveal_type(nd.byteswap())  # E: numpy.ndarray
@@ -42,16 +37,12 @@ reveal_type(nd.copy("C"))  # E: numpy.ndarray
 # view
 reveal_type(nd.view())  # E: numpy.ndarray
 reveal_type(nd.view(np.int64))  # E: numpy.ndarray
-reveal_type(nd.view(dtype=np.int64))  # E: numpy.ndarray
 reveal_type(nd.view(np.int64, np.matrix))  # E: numpy.ndarray
-reveal_type(nd.view(type=np.matrix))  # E: numpy.ndarray
 
 # getfield
 reveal_type(nd.getfield("float"))  # E: numpy.ndarray
 reveal_type(nd.getfield(float))  # E: numpy.ndarray
-
-reveal_type(nd.getfield(float))  # E: numpy.ndarray
-reveal_type(nd.getfield(float, offset=8))  # E: numpy.ndarray
+reveal_type(nd.getfield(float, 8))  # E: numpy.ndarray
 
 # setflags does not return a value
 # fill does not return a value
