@@ -29,10 +29,16 @@ if sys.version_info[0] < 3:
 else:
     from typing import SupportsBytes
 
+# Used to type hint values that could be in `ndarray`
+_T = TypeVar("_T")
+
 _Shape = Tuple[int, ...]
 
 # Anything that can be coerced to a shape tuple
 _ShapeLike = Union[int, Sequence[int]]
+
+# Anything that mentioned as `array_like ` in  documentation
+_ArrayLike = Union[_T, Sequence[_T]]
 
 _DtypeLikeNested = Any  # TODO: wait for support for recursive types
 
@@ -386,6 +392,76 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def flatten(self, order: str=...) -> ndarray: ...
     def ravel(self, order: str=...) -> ndarray: ...
     def squeeze(self, axis: Union[int, Tuple[int, ...]]=...) -> ndarray: ...
+
+    # Calculation
+    @overload
+    def argmax(self) -> Any: ...
+    @overload
+    def argmax(self, axis: int, out: ndarray=...) -> Any: ...
+    @overload
+    def max(self) -> Any: ...
+    @overload
+    def max(self, axis: int, out: ndarray=..., keepdims: bool=...) -> Any: ...
+    @overload
+    def min(self) -> Any: ...
+    @overload
+    def min(self, axis: int, out: ndarray=..., keepdims: bool=...) -> Any: ...
+    @overload
+    def ptp(self) -> Any: ...
+    @overload
+    def ptp(self, axis: int, out: ndarray=...) -> Any: ...
+    def clip(self,
+             __a_min: Optional[_ArrayLike[Any]]=...,
+             __a_max: Optional[_ArrayLike[Any]]=...,
+             out: ndarray=...) -> ndarray: ...
+    def conj(self) -> ndarray: ...
+    def round(self, decimals: int=..., out: ndarray=...) -> ndarray: ...
+    def trace(self,
+              offset: int=...,
+              axis1: int=...,
+              axis2: int=...,
+              dtype: _DtypeLike=...,
+              out: ndarray=...) -> ndarray: ...
+    def sum(self,
+            axis: Optional[_ShapeLike]=...,
+            dtype: _DtypeLike=...,
+            out: ndarray=...,
+            keepdims: bool=...) -> ndarray: ...
+    def cumsum(self, axis: int=..., dtype: _DtypeLike=..., out: ndarray=...) -> ndarray: ...
+    def mean(self,
+             axis: Optional[_ShapeLike]=...,
+             dtype: _DtypeLike=...,
+             out: ndarray=...,
+             keepdims: bool=...) -> ndarray: ...
+    def var(self,
+            axis: Optional[_ShapeLike]=...,
+            dtype: _DtypeLike=...,
+            out: ndarray=...,
+            ddof: int=...,
+            keepdims: bool=...) -> ndarray: ...
+    def std(self,
+            axis: Optional[_ShapeLike]=...,
+            dtype: _DtypeLike=...,
+            out: ndarray=...,
+            ddof: int=...,
+            keepdims: bool=...) -> ndarray: ...
+    def prod(self,
+             axis: Optional[_ShapeLike]=...,
+             dtype: _DtypeLike=...,
+             out: ndarray=...,
+             keepdims: bool=...) -> ndarray: ...
+    def cumprod(self,
+                axis: Optional[_ShapeLike]=...,
+                dtype: _DtypeLike=...,
+                out: ndarray=...) -> ndarray: ...
+    def all(self,
+            axis: Optional[_ShapeLike]=...,
+            out: ndarray=...,
+            keepdims: bool=...) -> ndarray: ...
+    def any(self,
+            axis: Optional[_ShapeLike]=...,
+            out: ndarray=...,
+            keepdims: bool=...) -> ndarray: ...
 
     # Many of these special methods are irrelevant currently, since protocols
     # aren't supported yet. That said, I'm adding them for completeness.
