@@ -9,6 +9,7 @@ from typing import (
     Iterable,
     List,
     Mapping,
+    overload,
     Optional,
     overload,
     Sequence,
@@ -394,21 +395,23 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def squeeze(self, axis: Union[int, Tuple[int, ...]]=...) -> ndarray: ...
 
     # Item selection and manipulation
-    def take(self,
-             indices: _ShapeLike=...,
-             axis: int=...,
-             out: ndarray=...,
-             mode: str=...) -> ndarray: ...
-    def put(self, ind: _ShapeLike, v: _ArrayLike[Any], mode: str=...): ...
+    @overload
+    def take(self, indices: int, *, mode: str=...) -> Any: ...
+    @overload
+    def take(self, indices: int, axis: int, out: ndarray=..., mode: str=...) -> Any: ...
+    @overload
+    def take(self, indices: Sequence[int], axis: int=..., out: ndarray=..., mode: str=...) -> ndarray: ...
+    def put(self, ind: _ShapeLike, v: _ArrayLike[Any], mode: str=...) -> None: ...
     def repeat(self, repeats: _ShapeLike, axis: int=...) -> ndarray: ...
     def choose(self,
-               choices: Union[Sequence[int], Sequence[Sequence[int]]],
+               choices: Sequence[Any],
+               *,
                out: ndarray=...,
                mode: str=...) -> ndarray: ...
     def sort(self,
              axis: int=...,
              kind: str=...,
-             order: Union[str, Sequence[str]]=...): ...
+             order: Union[str, Sequence[str]]=...) -> None: ...
     def argsort(self,
                 axis: Optional[int]=...,
                 kind: str=...,
@@ -417,16 +420,22 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
                   kth: _ShapeLike,
                   axis: int=...,
                   kind: str=...,
-                  order: Union[str, Sequence[str]]=...): ...
+                  order: Union[str, Sequence[str]]=...) -> None: ...
     def argpartition(self,
                      kth: _ShapeLike,
                      axis: Optional[int]=...,
                      kind: str=...,
                      order: Union[str, Sequence[str]]=...) -> ndarray: ...
+    @overload
     def searchsorted(self,
-                     v: _ArrayLike[Any],
+                     v: Sequence[Any],
                      side: str=...,
-                     sorter: _ArrayLike[int]=...) -> ndarray: ...
+                     sorter: Sequence[int]=...) -> ndarray: ...
+    @overload
+    def searchsorted(self,
+                     v: Any,
+                     side: str=...,
+                     sorter: Sequence[int]=...) -> Any: ...
     def nonzero(self) -> Tuple[ndarray, ...]: ...
     def compress(self,
                  condition: Union[Sequence[int], Sequence[bool]],
