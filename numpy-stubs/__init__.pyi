@@ -4,16 +4,14 @@ import sys
 from numpy.core._internal import _ctypes
 from typing import (
     Any,
-    Container,
     Dict,
     Iterable,
+    Iterator,
     List,
     Mapping,
     Optional,
     overload,
     Sequence,
-    Sized,
-    SupportsAbs,
     SupportsComplex,
     SupportsFloat,
     SupportsInt,
@@ -23,11 +21,6 @@ from typing import (
     TypeVar,
     Union,
 )
-
-if sys.version_info[0] < 3:
-    class SupportsBytes: ...
-else:
-    from typing import SupportsBytes
 
 _Shape = Tuple[int, ...]
 
@@ -215,8 +208,7 @@ class flatiter:
 
 
 _ArraySelf = TypeVar("_ArraySelf", bound=_ArrayOrScalarCommon)
-class _ArrayOrScalarCommon(SupportsInt, SupportsFloat, SupportsComplex,
-                           SupportsBytes, SupportsAbs[Any]):
+class _ArrayOrScalarCommon:
     @property
     def T(self: _ArraySelf) -> _ArraySelf: ...
 
@@ -344,7 +336,7 @@ class _ArrayOrScalarCommon(SupportsInt, SupportsFloat, SupportsComplex,
     def __getattr__(self, name) -> Any: ...
 
 
-class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
+class ndarray(_ArrayOrScalarCommon):
     real: ndarray
     imag: ndarray
 
@@ -387,14 +379,16 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def ravel(self, order: str=...) -> ndarray: ...
     def squeeze(self, axis: Union[int, Tuple[int, ...]]=...) -> ndarray: ...
 
-    # Many of these special methods are irrelevant currently, since protocols
-    # aren't supported yet. That said, I'm adding them for completeness.
-    # https://docs.python.org/3/reference/datamodel.html
+    # Special methods
+    def __reduce__(self, *args) -> Tuple[Any]: ...
+    def __setstate__(self, __state: Sequence[Any]) -> None: ...
+    def __array__(self, dtype: _DtypeLike=...) -> ndarray: ...
+    def __array_wrap__(self, obj: ndarray) -> None: ...
     def __len__(self) -> int: ...
     def __getitem__(self, key) -> Any: ...
-    def __setitem__(self, key, value): ...
-    def __iter__(self) -> Any: ...
-    def __contains__(self, key) -> bool: ...
+    def __setitem__(self, key, value: Any) -> None: ...
+    def __iter__(self) -> Iterator[Any]: ...
+    def __contains__(self, key: Any) -> bool: ...
     def __index__(self) -> int: ...
 
 class generic(_ArrayOrScalarCommon):
