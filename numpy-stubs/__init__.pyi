@@ -38,9 +38,6 @@ _Shape = Tuple[int, ...]
 # Anything that can be coerced to a shape tuple
 _ShapeLike = Union[int, Sequence[int]]
 
-# Anything that mentioned as `array_like ` in  documentation
-_ArrayLike = Union[_T, Sequence[_T]]
-
 _DtypeLikeNested = Any  # TODO: wait for support for recursive types
 
 # Anything that can be coerced into numpy.dtype.
@@ -401,7 +398,7 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def take(self, indices: int, axis: int, out: ndarray=..., mode: str=...) -> Any: ...
     @overload
     def take(self, indices: Sequence[int], axis: int=..., out: ndarray=..., mode: str=...) -> ndarray: ...
-    def put(self, ind: _ShapeLike, v: _ArrayLike[Any], mode: str=...) -> None: ...
+    def put(self, ind: _ShapeLike, v: Any, mode: str=...) -> None: ...
     def repeat(self, repeats: _ShapeLike, axis: int=...) -> ndarray: ...
     def choose(self,
                choices: Sequence[Any],

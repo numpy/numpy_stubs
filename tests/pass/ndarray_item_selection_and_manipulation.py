@@ -28,8 +28,10 @@ nd.take([0, 1], 1, np.empty((2, 2), dtype=np.int64), mode="raise")
 
 # put
 nd.put(0, 5)
+nd.put(0, 5.)
 nd.put(0, [1, 5])
 nd.put([0, 1], 5)
+nd.put([0, 1], 5.)
 nd.put([0, 1], [5, 6])
 
 nd.put(0, 5, "raise")
