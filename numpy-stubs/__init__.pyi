@@ -348,7 +348,7 @@ class _ArrayOrScalarCommon(SupportsInt, SupportsFloat, SupportsComplex,
     def __getattr__(self, name) -> Any: ...
 
 
-class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
+class ndarray(_ArrayOrScalarCommon, Sequence):
     real: ndarray
     imag: ndarray
 
