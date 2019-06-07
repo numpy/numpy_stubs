@@ -278,9 +278,20 @@ class _ArrayOrScalarCommon(
     # TODO(shoyer): remove when all methods are defined
     def __getattr__(self, name) -> Any: ...
 
+_BufferType = Union[ndarray, bytes, bytearray, memoryview]
+
 class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     real: ndarray
     imag: ndarray
+    def __new__(
+        cls,
+        shape: Sequence[int],
+        dtype: Union[_DtypeLike, str] = ...,
+        buffer: _BufferType = ...,
+        offset: int = ...,
+        strides: _ShapeLike = ...,
+        order: Optional[str] = ...,
+    ) -> ndarray: ...
     @property
     def dtype(self) -> _Dtype: ...
     @dtype.setter
