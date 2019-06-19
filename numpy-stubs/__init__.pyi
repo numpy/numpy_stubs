@@ -77,6 +77,7 @@ _DtypeLike = Union[
     Dict[str, Tuple[_DtypeLikeNested, int]],
     # (base_dtype, new_dtype)
     Tuple[_DtypeLikeNested, _DtypeLikeNested],
+    Sequence[Tuple[_DtypeLikeNested, _DtypeLikeNested]],
 ]
 
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
@@ -389,7 +390,7 @@ class _real_generic(generic):
     def imag(self: _ArraySelf) -> _ArraySelf: ...
 
 class number(generic):
-    def __init__(self, value: Union[SupportsInt, SupportsFloat] = ...) -> None: ...
+    def __init__(self, value: Union[SupportsInt, SupportsFloat, str] = ...) -> None: ...
 
 class bool_(_real_generic): ...
 class object_(generic): ...
@@ -449,6 +450,11 @@ def array(
     copy: bool = ...,
     subok: bool = ...,
     ndmin: int = ...,
+) -> ndarray: ...
+def asarray(
+    a: Union[SupportsFloat, Sequence, ndarray],
+    dtype: _DtypeLike = ...,
+    order: str = ...,
 ) -> ndarray: ...
 
 # TODO(shoyer): remove when the full numpy namespace is defined
