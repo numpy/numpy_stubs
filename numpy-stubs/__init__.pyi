@@ -453,8 +453,8 @@ def array(
 ) -> ndarray: ...
 def asarray(
     a: Union[SupportsFloat, Sequence, ndarray],
-    dtype: _DtypeLike = ...,
-    order: str = ...,
+    dtype: Optional[_DtypeLike] = ...,
+    order: Optional[str] = ...,
 ) -> ndarray: ...
 
 # TODO(shoyer): remove when the full numpy namespace is defined
