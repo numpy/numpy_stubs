@@ -77,7 +77,7 @@ _DtypeLike = Union[
     Dict[str, Tuple[_DtypeLikeNested, int]],
     # (base_dtype, new_dtype)
     Tuple[_DtypeLikeNested, _DtypeLikeNested],
-    Sequence[Tuple[str, _DtypeLikeNested]],
+    List[Tuple[str, _DtypeLikeNested]],
 ]
 
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
