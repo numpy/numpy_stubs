@@ -54,7 +54,7 @@ _DtypeLike = Union[
     # (fixed_dtype, shape)
     Tuple[_DtypeLikeNested, _ShapeLike],
     # [(field_name, field_dtype, field_shape), ...]
-    List[
+    Sequence[
         Union[
             Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested],
             Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested, _ShapeLike],
