@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 
 import pytest
 from mypy import api
@@ -50,14 +51,14 @@ def test_fail(path, py2_arg):
     with open(path) as fin:
         lines = fin.readlines()
 
-    errors = {}
+    errors = defaultdict(lambda: "")
     for error_line in stdout.split("\n"):
         error_line = error_line.strip()
         if not error_line:
             continue
 
         lineno = int(error_line.split(":")[1])
-        errors[lineno] = error_line
+        errors[lineno] += error_line
 
     for i, line in enumerate(lines):
         lineno = i + 1
