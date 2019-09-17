@@ -479,17 +479,11 @@ def array(
     subok: bool = ...,
     ndmin: int = ...,
 ) -> ndarray: ...
-
 def zeros(
-    shape: _ShapeLike,
-    dtype: _DtypeLike = ...,
-    order: Optional[str] = ...,
+    shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
-
 def ones(
-    shape: _ShapeLike,
-    dtype: _DtypeLike = ...,
-    order: Optional[str] = ...,
+    shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
 
 # TODO(shoyer): remove when the full numpy namespace is defined
