@@ -13,6 +13,10 @@ ndarray_func(np.array([1, 2]))
 array == 1
 array.dtype == float
 
+# Array creation routines checks
+ndarray_func(np.zeros([1, 2]))
+ndarray_func(np.ones([1, 2]))
+
 # Dtype construction
 np.dtype(float)
 np.dtype(np.float64)
