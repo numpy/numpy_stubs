@@ -82,6 +82,8 @@ _DtypeLike = Union[
 
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
 
+_ArrayLike = TypeVar("_ArrayLike", str, int, float, bool, object, ByteString, Iterable, Container, ndarray)
+
 class dtype:
     names: Optional[Tuple[str, ...]]
     def __init__(
