@@ -56,12 +56,11 @@ _DtypeLike = Union[
     # (fixed_dtype, shape)
     Tuple[_DtypeLikeNested, _ShapeLike],
     # [(field_name, field_dtype, field_shape), ...]
-    List[
-        Union[
-            Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested],
-            Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested, _ShapeLike],
-        ]
-    ],
+    #
+    # The type here is quite broad because NumPy accepts quite a wide
+    # range of inputs inside the list; see the tests for some
+    # examples.
+    List[Any],
     # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
     #  'itemsize': ...}
     # TODO: use TypedDict when/if it's officially supported
