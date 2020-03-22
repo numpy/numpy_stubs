@@ -6,6 +6,7 @@ from numpy.core._internal import _ctypes
 from typing import (
     Any,
     ByteString,
+    Callable,
     Container,
     Dict,
     IO,
@@ -488,6 +489,161 @@ def zeros(
 def ones(
     shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
+
+class ufunc:
+    def __call__(
+        self,
+        *args: _ArrayLike,
+        out: Optional[Union[ndarray, Tuple[ndarray, ...]]] = ...,
+        where: Optional[ndarray] = ...,
+        # The list should be a list of tuples of ints, but since we
+        # don't know the signature it would need to be
+        # Tuple[int, ...]. But, since List is invariant something like
+        # e.g. List[Tuple[int, int]] isn't a subtype of
+        # List[Tuple[int, ...]], so we can't type precisely here.
+        axes: List[Any] = ...,
+        axis: int = ...,
+        keepdims: bool = ...,
+        # TODO: make this precise when we can use Literal.
+        casting: str = ...,
+        # TODO: make this precise when we can use Literal.
+        order: Optional[str] = ...,
+        dtype: Optional[_DtypeLike] = ...,
+        subok: bool = ...,
+        signature: Union[str, Tuple[str]] = ...,
+        # In reality this should be a length of list 3 containing an
+        # int, an int, and a callable, but there's no way to express
+        # that.
+        extobj: List[Union[int, Callable]] = ...,
+    ) -> _ArrayOrScalarCommon: ...
+    @property
+    def nin(self) -> int: ...
+    @property
+    def nout(self) -> int: ...
+    @property
+    def nargs(self) -> int: ...
+    @property
+    def ntypes(self) -> int: ...
+    @property
+    def types(self) -> List[str]: ...
+    # Broad return type because it has to encompass things like
+    #
+    # >>> np.logical_and.identity is True
+    # True
+    # >>> np.add.identity is 0
+    # True
+    # >>> np.sin.identity is None
+    # True
+    #
+    # and any user-defined ufuncs.
+    @property
+    def identity(self) -> Any: ...
+    # This is None for ufuncs and a string for gufuncs.
+    @property
+    def signature(self) -> Optional[str]: ...
+    # The next four methods will always exist, but they will just
+    # raise a ValueError ufuncs with that don't accept two input
+    # arguments and return one output argument. Because of that we
+    # can't type them very precisely.
+    @property
+    def reduce(self) -> Any: ...
+    @property
+    def accumulate(self) -> Any: ...
+    @property
+    def reduceat(self) -> Any: ...
+    @property
+    def outer(self) -> Any: ...
+    # Similarly at won't be defined for ufuncs that return multiple
+    # outputs, so we can't type it very precisely.
+    @property
+    def at(self) -> Any: ...
+
+absolute: ufunc
+add: ufunc
+arccos: ufunc
+arccosh: ufunc
+arcsin: ufunc
+arcsinh: ufunc
+arctan2: ufunc
+arctan: ufunc
+arctanh: ufunc
+bitwise_and: ufunc
+bitwise_or: ufunc
+bitwise_xor: ufunc
+cbrt: ufunc
+ceil: ufunc
+conjugate: ufunc
+copysign: ufunc
+cos: ufunc
+cosh: ufunc
+deg2rad: ufunc
+degrees: ufunc
+divmod: ufunc
+equal: ufunc
+exp2: ufunc
+exp: ufunc
+expm1: ufunc
+fabs: ufunc
+float_power: ufunc
+floor: ufunc
+floor_divide: ufunc
+fmax: ufunc
+fmin: ufunc
+fmod: ufunc
+frexp: ufunc
+gcd: ufunc
+greater: ufunc
+greater_equal: ufunc
+heaviside: ufunc
+hypot: ufunc
+invert: ufunc
+isfinite: ufunc
+isinf: ufunc
+isnan: ufunc
+isnat: ufunc
+lcm: ufunc
+ldexp: ufunc
+left_shift: ufunc
+less: ufunc
+less_equal: ufunc
+log10: ufunc
+log1p: ufunc
+log2: ufunc
+log: ufunc
+logaddexp2: ufunc
+logaddexp: ufunc
+logical_and: ufunc
+logical_not: ufunc
+logical_or: ufunc
+logical_xor: ufunc
+matmul: ufunc
+maximum: ufunc
+minimum: ufunc
+modf: ufunc
+multiply: ufunc
+negative: ufunc
+nextafter: ufunc
+not_equal: ufunc
+positive: ufunc
+power: ufunc
+rad2deg: ufunc
+radians: ufunc
+reciprocal: ufunc
+remainder: ufunc
+right_shift: ufunc
+rint: ufunc
+sign: ufunc
+signbit: ufunc
+sin: ufunc
+sinh: ufunc
+spacing: ufunc
+sqrt: ufunc
+square: ufunc
+subtract: ufunc
+tan: ufunc
+tanh: ufunc
+true_divide: ufunc
+trunc: ufunc
 
 # TODO(shoyer): remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...
