@@ -1,4 +1,5 @@
 import os
+import re
 from collections import defaultdict
 
 import pytest
@@ -38,8 +39,11 @@ def get_test_cases(directory):
 @pytest.mark.parametrize("path,py2_arg", get_test_cases(PASS_DIR))
 def test_success(path, py2_arg):
     stdout, stderr, exitcode = api.run([path] + py2_arg)
-    assert stdout == ''
-    assert exitcode == 0
+    assert exitcode == 0, stdout
+    assert re.match(
+        r'Success: no issues found in \d+ source files?',
+        stdout.strip(),
+    )
 
 
 @pytest.mark.parametrize("path,py2_arg", get_test_cases(FAIL_DIR))
@@ -52,7 +56,12 @@ def test_fail(path, py2_arg):
         lines = fin.readlines()
 
     errors = defaultdict(lambda: "")
-    for error_line in stdout.split("\n"):
+    error_lines = stdout.rstrip("\n").split("\n")
+    assert re.match(
+        r'Found \d+ errors? in \d+ files? \(checked \d+ source files?\)',
+        error_lines[-1].strip(),
+    )
+    for error_line in error_lines[:-1]:
         error_line = error_line.strip()
         if not error_line:
             continue
