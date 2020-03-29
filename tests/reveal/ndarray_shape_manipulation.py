@@ -1,6 +1,6 @@
 import numpy as np
 
-nd = np.array([[1, 2], [3, 4]])
+nd = np.array([[1, 2], [3, 4]], dtype=np.int64)
 
 # reshape
 reveal_type(nd.reshape())  # E: numpy.ndarray

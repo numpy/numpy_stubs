@@ -1,13 +1,15 @@
 """Simple expression that should pass with mypy."""
 import operator
+from typing import TypeVar
 
 import numpy as np
 from typing import Iterable  # noqa: F401
 
 # Basic checks
-array = np.array([1, 2])
+array = np.array([1, 2], dtype=np.int64)
+T = TypeVar('T', bound=np.generic)
 def ndarray_func(x):
-    # type: (np.ndarray) -> np.ndarray
+    # type: (np.ndarray[T]) -> np.ndarray[T]
     return x
 ndarray_func(np.array([1, 2]))
 array == 1
@@ -70,7 +72,7 @@ array_2d[:2, :2] = 0
 # Other special methods
 len(array)
 str(array)
-array_scalar = np.array(1)
+array_scalar = np.array(1, dtype=np.int64)
 int(array_scalar)
 float(array_scalar)
 # currently does not work due to https://github.com/python/typeshed/issues/1904

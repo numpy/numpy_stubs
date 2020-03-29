@@ -1,6 +1,9 @@
 import numpy as np
 
-nd = np.array([[1, 2], [3, 4]])
+nd = np.array([[1, 2], [3, 4]], dtype=np.int64)
+
+# dtype of the array
+reveal_type(nd)  # E: numpy.ndarray[numpy.int64*]
 
 # item
 reveal_type(nd.item())  # E: Any
@@ -19,36 +22,36 @@ reveal_type(nd.tolist())  # E: builtins.list[Any]
 # dumps is pretty simple
 
 # astype
-reveal_type(nd.astype("float"))  # E: numpy.ndarray
-reveal_type(nd.astype(float))  # E: numpy.ndarray
-reveal_type(nd.astype(float, "K"))  # E: numpy.ndarray
-reveal_type(nd.astype(float, "K", "unsafe"))  # E: numpy.ndarray
-reveal_type(nd.astype(float, "K", "unsafe", True))  # E: numpy.ndarray
-reveal_type(nd.astype(float, "K", "unsafe", True, True))  # E: numpy.ndarray
+reveal_type(nd.astype("float"))  # E: numpy.ndarray[Any]
+reveal_type(nd.astype(float))  # E: numpy.ndarray[Any]
+reveal_type(nd.astype(float, "K"))  # E: numpy.ndarray[Any]
+reveal_type(nd.astype(float, "K", "unsafe"))  # E: numpy.ndarray[Any]
+reveal_type(nd.astype(float, "K", "unsafe", True))  # E: numpy.ndarray[Any]
+reveal_type(nd.astype(float, "K", "unsafe", True, True))  # E: numpy.ndarray[Any]
 
 # byteswap
-reveal_type(nd.byteswap())  # E: numpy.ndarray
-reveal_type(nd.byteswap(True))  # E: numpy.ndarray
+reveal_type(nd.byteswap())  # E: numpy.ndarray[numpy.int64*]
+reveal_type(nd.byteswap(True))  # E: numpy.ndarray[numpy.int64*]
 
 # copy
-reveal_type(nd.copy())  # E: numpy.ndarray
-reveal_type(nd.copy("C"))  # E: numpy.ndarray
+reveal_type(nd.copy())  # E: numpy.ndarray[numpy.int64*]
+reveal_type(nd.copy("C"))  # E: numpy.ndarray[numpy.int64*]
 
 # view
 class SubArray(np.ndarray):
     pass
 
-reveal_type(nd.view())  # E: numpy.ndarray
-reveal_type(nd.view(np.int64))  # E: numpy.ndarray
+reveal_type(nd.view())  # E: numpy.ndarray[numpy.int64*]
+reveal_type(nd.view(np.float64))  # E: numpy.ndarray[numpy.float64*]
 # replace `Any` with `numpy.matrix` when `matrix` will be added to stubs
 reveal_type(nd.view(np.int64, np.matrix))  # E: Any
 reveal_type(nd.view(np.int64, SubArray))  # E: SubArray
 
 # getfield
-reveal_type(nd.getfield("float"))  # E: numpy.ndarray
-reveal_type(nd.getfield(float))  # E: numpy.ndarray
-reveal_type(nd.getfield(float, 8))  # E: numpy.ndarray
+reveal_type(nd.getfield("float"))  # E: numpy.ndarray[Any]
+reveal_type(nd.getfield(float))  # E: numpy.ndarray[Any]
+reveal_type(nd.getfield(float, 8))  # E: numpy.ndarray[Any]
+reveal_type(nd.getfield(np.int32, 4))  # E: numpy.ndarray[numpy.int32*]
 
 # setflags does not return a value
 # fill does not return a value
-

@@ -7,5 +7,5 @@ import numpy as np
 # https://github.com/numpy/numpy-stubs/issues/7
 #
 # for more context.
-float_array = np.array([1.0])
+float_array = np.array([1.0], dtype=np.float64)
 float_array.dtype = np.bool_  # E: Property "dtype" defined in "ndarray" is read-only
