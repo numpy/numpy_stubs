@@ -2,9 +2,6 @@ import numpy as np
 
 nd = np.array([[1, 2], [3, 4]], dtype=np.int64)
 
-# dtype of the array
-reveal_type(nd)  # E: numpy.ndarray[numpy.int64*]
-
 # item
 reveal_type(nd.item())  # E: Any
 reveal_type(nd.item(1))  # E: Any
