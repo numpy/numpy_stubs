@@ -10,7 +10,7 @@ STUBS_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 def main():
     subprocess.run(
-        ['pip', 'install', STUBS_ROOT],
+        [sys.executable, '-m', 'pip', 'install', STUBS_ROOT],
         capture_output=True,
         check=True,
     )
