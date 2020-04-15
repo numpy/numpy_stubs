@@ -571,5 +571,21 @@ def isclose(
 def array_equal(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
 def array_equiv(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
 
+# Numerical constants
+Inf: float
+Infinity: float
+NAN: float
+NINF: float
+NZERO: float
+NaN: float
+PINF: float
+PZERO: float
+e: float
+euler_gamma: float
+inf: float
+infty: float
+nan: float
+pi: float
+
 # TODO(shoyer): remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...
