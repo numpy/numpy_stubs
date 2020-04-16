@@ -25,9 +25,26 @@ np.dtype('float64')
 np.dtype(np.dtype(float))
 np.dtype(('U', 10))
 np.dtype((np.int32, (2, 2)))
-np.dtype([('R', 'u1'), ('G', 'u1'), ('B', 'u1')])
-np.dtype([('R', 'u1', 1)])
-np.dtype([('R', 'u1', (2, 2))])
+# Define the arguments on the previous line to prevent bidirectional
+# type inference in mypy from broadening the types.
+two_tuples_dtype = [('R', 'u1'), ('G', 'u1'), ('B', 'u1')]
+np.dtype(two_tuples_dtype)
+
+three_tuples_dtype = [('R', 'u1', 1)]
+np.dtype(three_tuples_dtype)
+
+mixed_tuples_dtype = [('R', 'u1'), ('G', np.unicode_, 1)]
+np.dtype(mixed_tuples_dtype)
+
+shape_tuple_dtype = [('R', 'u1', (2, 2))]
+np.dtype(shape_tuple_dtype)
+
+shape_like_dtype = [('R', 'u1', (2, 2)), ('G', np.unicode_, 1)]
+np.dtype(shape_like_dtype)
+
+object_dtype = [('field1', object)]
+np.dtype(object_dtype)
+
 np.dtype({'col1': ('U10', 0), 'col2': ('float32', 10)})
 np.dtype((np.int32, {'real': (np.int16, 0), 'imag': (np.int16, 2)}))
 np.dtype((np.int32, (np.int8, 4)))

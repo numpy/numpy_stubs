@@ -8,6 +8,7 @@ from typing import (
     ByteString,
     Callable,
     Container,
+    Callable,
     Dict,
     IO,
     Iterable,
@@ -57,12 +58,11 @@ _DtypeLike = Union[
     # (fixed_dtype, shape)
     Tuple[_DtypeLikeNested, _ShapeLike],
     # [(field_name, field_dtype, field_shape), ...]
-    List[
-        Union[
-            Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested],
-            Tuple[Union[str, Tuple[str, str]], _DtypeLikeNested, _ShapeLike],
-        ]
-    ],
+    #
+    # The type here is quite broad because NumPy accepts quite a wide
+    # range of inputs inside the list; see the tests for some
+    # examples.
+    List[Any],
     # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
     #  'itemsize': ...}
     # TODO: use TypedDict when/if it's officially supported
@@ -299,8 +299,6 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     ) -> ndarray: ...
     @property
     def dtype(self) -> _Dtype: ...
-    @dtype.setter
-    def dtype(self, value: _DtypeLike): ...
     @property
     def ctypes(self) -> _ctypes: ...
     @property
@@ -489,6 +487,137 @@ def zeros(
 def ones(
     shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
+def zeros_like(
+    a: _ArrayLike,
+    dtype: Optional[dtype] = ...,
+    order: str = ...,
+    subok: bool = ...,
+    shape: Optional[Union[int, Sequence[int]]] = ...,
+) -> ndarray: ...
+def ones_like(
+    a: _ArrayLike,
+    dtype: Optional[dtype] = ...,
+    order: str = ...,
+    subok: bool = ...,
+    shape: Optional[_ShapeLike] = ...,
+) -> ndarray[int]: ...
+def full(
+    shape: _ShapeLike, fill_value: Any, dtype: Optional[dtype] = ..., order: str = ...
+) -> ndarray: ...
+def full_like(
+    a: _ArrayLike,
+    fill_value: Any,
+    dtype: Optional[dtype] = ...,
+    order: str = ...,
+    subok: bool = ...,
+    shape: Optional[_ShapeLike] = ...,
+) -> ndarray: ...
+def count_nonzero(
+    a: _ArrayLike, axis: Optional[Union[int, Tuple[int], Tuple[int, int]]] = ...
+) -> Union[int, ndarray]: ...
+def isfortran(a: ndarray) -> bool: ...
+def argwhere(a: _ArrayLike) -> ndarray: ...
+def flatnonzero(a: _ArrayLike) -> ndarray: ...
+def correlate(a: _ArrayLike, v: _ArrayLike, mode: str = ...) -> ndarray: ...
+def convolve(a: _ArrayLike, v: _ArrayLike, mode: str = ...) -> ndarray: ...
+def outer(a: _ArrayLike, b: _ArrayLike, out: ndarray = ...) -> ndarray: ...
+def tensordot(
+    a: _ArrayLike,
+    b: _ArrayLike,
+    axes: Union[
+        int, Tuple[int, int], Tuple[Tuple[int, int], ...], Tuple[List[int, int], ...]
+    ] = ...,
+) -> ndarray: ...
+def roll(
+    a: _ArrayLike,
+    shift: Union[int, Tuple[int, ...]],
+    axis: Optional[Union[int, Tuple[int, ...]]] = ...,
+) -> ndarray: ...
+def rollaxis(a: _ArrayLike, axis: int, start: int = ...) -> ndarray: ...
+def moveaxis(
+    a: ndarray,
+    source: Union[int, Sequence[int]],
+    destination: Union[int, Sequence[int]],
+) -> ndarray: ...
+def cross(
+    a: _ArrayLike,
+    b: _ArrayLike,
+    axisa: int = ...,
+    axisb: int = ...,
+    axisc: int = ...,
+    axis: Optional[int] = ...,
+) -> ndarray: ...
+def indices(
+    dimensions: Sequence[int], dtype: dtype = ..., sparse: bool = ...
+) -> Union[ndarray, Tuple[ndarray, ...]]: ...
+def fromfunction(function: Callable, shape: Tuple[int, int], **kwargs) -> Any: ...
+def isscalar(element: Any) -> bool: ...
+def binary_repr(num: int, width: Optional[int] = ...) -> str: ...
+def base_repr(number: int, base: int = ..., padding: int = ...) -> str: ...
+def identity(n: int, dtype: Optional[dtype] = ...) -> ndarray: ...
+def allclose(
+    a: _ArrayLike,
+    b: _ArrayLike,
+    rtol: float = ...,
+    atol: float = ...,
+    equal_nan: bool = ...,
+) -> bool: ...
+def isclose(
+    a: _ArrayLike,
+    b: _ArrayLike,
+    rtol: float = ...,
+    atol: float = ...,
+    equal_nan: bool = ...,
+) -> Union[bool_, ndarray]: ...
+def array_equal(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
+def array_equiv(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
+
+#
+# Constants
+#
+
+Inf: float
+Infinity: float
+NAN: float
+NINF: float
+NZERO: float
+NaN: float
+PINF: float
+PZERO: float
+e: float
+euler_gamma: float
+inf: float
+infty: float
+nan: float
+pi: float
+
+ALLOW_THREADS: int
+BUFSIZE: int
+CLIP: int
+ERR_CALL: int
+ERR_DEFAULT: int
+ERR_IGNORE: int
+ERR_LOG: int
+ERR_PRINT: int
+ERR_RAISE: int
+ERR_WARN: int
+FLOATING_POINT_SUPPORT: int
+FPE_DIVIDEBYZERO: int
+FPE_INVALID: int
+FPE_OVERFLOW: int
+FPE_UNDERFLOW: int
+MAXDIMS: int
+MAY_SHARE_BOUNDS: int
+MAY_SHARE_EXACT: int
+RAISE: int
+SHIFT_DIVIDEBYZERO: int
+SHIFT_INVALID: int
+SHIFT_OVERFLOW: int
+SHIFT_UNDERFLOW: int
+UFUNC_BUFSIZE_DEFAULT: int
+WRAP: int
+little_endian: int
+tracemalloc_domain: int
 
 class ufunc:
     def __call__(

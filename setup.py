@@ -23,4 +23,5 @@ setup(
     # PEP 561 requires these
     install_requires=['numpy>=1.14.0'],
     package_data=find_stubs('numpy-stubs'),
+    zip_safe=False,
 )
