@@ -1,6 +1,7 @@
 import builtins
 import sys
 import datetime as dt
+import warnings as _warnings
 
 from numpy.core._internal import _ctypes
 from typing import (
@@ -778,3 +779,17 @@ trunc: ufunc
 
 # TODO(shoyer): remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...
+
+# Warnings
+warnings = _warnings
+class ModuleDeprecationWarning(DeprecationWarning): ...
+class VisibleDeprecationWarning(UserWarning): ...
+class ComplexWarning(RuntimeWarning): ...
+class RankWarning(UserWarning): ...
+
+# Errors
+class TooHardError(RuntimeError): ...
+class AxisError(ValueError, IndexError):
+    # Note that all parameters for __init__ (except self) can technically be Any.
+    # So it's a question here whether or not we should allow what's possible or what's intended
+    def __init__(self, axis: int, ndim: Optional[int] = ..., msg_prefix: Optional[str] = ...) -> None: ...
