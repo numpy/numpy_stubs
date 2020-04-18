@@ -3,15 +3,15 @@ from typing import Type
 
 import numpy as np
 
-warnings: types.ModuleType = np.warnings
-ModuleDeprecationWarning: Type[DeprecationWarning] = np.ModuleDeprecationWarning
-VisibleDeprecationWarning: Type[UserWarning] = np.VisibleDeprecationWarning
-ComplexWarning: Type[RuntimeWarning] = np.ComplexWarning
-RankWarning: Type[UserWarning] = np.RankWarning
+warnings = np.warnings  # type: types.ModuleType
+ModuleDeprecationWarning = np.ModuleDeprecationWarning  # type: Type[DeprecationWarning]
+VisibleDeprecationWarning = np.VisibleDeprecationWarning  # type: Type[UserWarning]
+ComplexWarning = np.ComplexWarning  # type: Type[RuntimeWarning]
+RankWarning = np.RankWarning  # type: Type[UserWarning]
 
-TooHardError: Type[RuntimeError] = np.TooHardError
-AxisError1: Type[ValueError] = np.AxisError
-AxisError2: Type[IndexError] = np.AxisError
+TooHardError = np.TooHardError  # type: Type[RuntimeError]
+AxisError1 = np.AxisError  # type: Type[ValueError]
+AxisError2 = np.AxisError  # type: Type[IndexError]
 
 np.AxisError(1)
 np.AxisError(1, ndim=2)
