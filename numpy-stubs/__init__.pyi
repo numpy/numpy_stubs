@@ -35,6 +35,11 @@ if sys.version_info[0] < 3:
 else:
     from typing import SupportsBytes
 
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
 _Shape = Tuple[int, ...]
 
 # Anything that can be coerced to a shape tuple
@@ -792,3 +797,32 @@ class AxisError(ValueError, IndexError):
     def __init__(
         self, axis: int, ndim: Optional[int] = ..., msg_prefix: Optional[str] = ...
     ) -> None: ...
+
+@overload
+def all(
+    a: _ArrayLike,
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+    keepdims: Literal[False] = ...,
+) -> bool: ...
+@overload
+def all(
+    a: _ArrayLike,
+    axis: Optional[_ShapeLike] = ...,
+    out: Optional[ndarray] = ...,
+    keepdims: bool = ...,
+) -> Union[bool, ndarray]: ...
+@overload
+def any(
+    a: _ArrayLike,
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+    keepdims: Literal[False] = ...,
+) -> bool: ...
+@overload
+def any(
+    a: _ArrayLike,
+    axis: Optional[_ShapeLike] = ...,
+    out: Optional[ndarray] = ...,
+    keepdims: bool = ...,
+) -> Union[bool, ndarray]: ...
