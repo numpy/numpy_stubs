@@ -10,6 +10,40 @@ import pytest
 
 STUBS_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+# Technically "public" functions (they don't start with an underscore)
+# that we don't want to include.
+BLACKLIST = {
+    'numpy': {
+        # Stdlib modules in the namespace by accident
+        'absolute_import',
+        'warnings',
+        # Accidentally public
+        'add_docstring',
+        'add_newdoc',
+        'add_newdoc_ufunc',
+        # Builtins
+        'bool',
+        'complex',
+        'float',
+        'int',
+        'long',
+        'object',
+        'str',
+        'unicode',
+        # Should use numpy_financial instead
+        'fv',
+        'ipmt',
+        'irr',
+        'mirr',
+        'nper',
+        'npv',
+        'pmt',
+        'ppmt',
+        'pv',
+        'rate',
+    },
+}
+
 
 class FindAttributes(ast.NodeVisitor):
     """Find top-level attributes/functions/classes in the stubs.
@@ -66,7 +100,9 @@ def find_missing(module_name):
         # No stubs for this module yet.
         stubs_attributes = set()
 
-    missing = module_attributes - stubs_attributes
+    blacklist = BLACKLIST.get(module_name, set())
+
+    missing = module_attributes - stubs_attributes - blacklist
     print('\n'.join(sorted(missing)))
 
 
