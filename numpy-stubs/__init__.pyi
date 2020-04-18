@@ -28,6 +28,7 @@ from typing import (
     TypeVar,
     Union,
 )
+from typing_extensions import Literal
 
 if sys.version_info[0] < 3:
     class SupportsBytes: ...
@@ -619,7 +620,10 @@ WRAP: int
 little_endian: int
 tracemalloc_domain: int
 
-class ufunc:
+_Nin = TypeVar('_Nin', bound=int)
+_Nout = TypeVar('_Nout', bound=int)
+
+class ufunc(Generic[_Nin], Generic[_Nout]):
     @property
     def __name__(self) -> str: ...
     def __call__(
@@ -765,7 +769,7 @@ right_shift: ufunc
 rint: ufunc
 sign: ufunc
 signbit: ufunc
-sin: ufunc
+sin: ufunc[Literal[1], Literal[1]]
 sinh: ufunc
 spacing: ufunc
 sqrt: ufunc
