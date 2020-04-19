@@ -806,9 +806,11 @@ _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
 _Side = Literal["left", "right"]
 
 # A placeholder (?) for numerical scalars
-_Scalar = TypeVar('_Scalar', bound=Union[int, float, complex, bool, bool_, number])
+_Scalar = TypeVar("_Scalar", bound=Union[int, float, complex, bool, bool_, number])
 _ArrayLikeInt = Union[SupportsInt, Sequence[SupportsInt]]
-_ArrayLikeBool = _ArrayLike  # TODO: Should be an array-like object consisting of booleans
+_ArrayLikeBool = (
+    _ArrayLike  # TODO: Should be an array-like object consisting of booleans
+)
 
 def take(
     a: _ArrayLike,
