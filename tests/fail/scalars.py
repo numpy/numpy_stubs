@@ -3,6 +3,24 @@ import numpy as np
 # Construction
 
 np.float32(3j)  # E: incompatible type
+
+# Technically the following examples are valid NumPy code. But they
+# are not considered a best practice, and people who wish to use the
+# stubs should instead do
+#
+# np.array([1.0, 0.0, 0.0], dtype=np.float32)
+# np.array([], dtype=np.complex64)
+#
+# See e.g. the discussion on the mailing list
+#
+# https://mail.python.org/pipermail/numpy-discussion/2020-April/080566.html
+#
+# and the issue
+#
+# https://github.com/numpy/numpy-stubs/issues/41
+#
+# for more context.
+np.float32([1.0, 0.0, 0.0])  # E: incompatible type
 np.complex64([])  # E: incompatible type
 
 np.complex64(1, 2)  # E: Too many arguments
