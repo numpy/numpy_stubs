@@ -10,6 +10,7 @@ from typing import (
     Container,
     Callable,
     Dict,
+    Generic,
     IO,
     Iterable,
     List,
@@ -28,13 +29,17 @@ from typing import (
     TypeVar,
     Union,
 )
-from typing_extensions import Literal
 
 if sys.version_info[0] < 3:
     class SupportsBytes: ...
 
 else:
     from typing import SupportsBytes
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 _Shape = Tuple[int, ...]
 
@@ -620,8 +625,8 @@ WRAP: int
 little_endian: int
 tracemalloc_domain: int
 
-_Nin = TypeVar('_Nin', bound=int)
-_Nout = TypeVar('_Nout', bound=int)
+_Nin = TypeVar("_Nin", bound=int)
+_Nout = TypeVar("_Nout", bound=int)
 
 class ufunc(Generic[_Nin], Generic[_Nout]):
     @property
@@ -650,11 +655,11 @@ class ufunc(Generic[_Nin], Generic[_Nout]):
         # int, an int, and a callable, but there's no way to express
         # that.
         extobj: List[Union[int, Callable]] = ...,
-    ) -> Union[ndarray, generic]: ...
+    ) -> Union[ndarray, generic, Tuple[Union[ndarray, generic], ...]]: ...
     @property
-    def nin(self) -> int: ...
+    def nin(self) -> _Nin: ...
     @property
-    def nout(self) -> int: ...
+    def nout(self) -> _Nout: ...
     @property
     def nargs(self) -> int: ...
     @property
@@ -693,92 +698,92 @@ class ufunc(Generic[_Nin], Generic[_Nout]):
     @property
     def at(self) -> Any: ...
 
-absolute: ufunc
-add: ufunc
-arccos: ufunc
-arccosh: ufunc
-arcsin: ufunc
-arcsinh: ufunc
-arctan2: ufunc
-arctan: ufunc
-arctanh: ufunc
-bitwise_and: ufunc
-bitwise_or: ufunc
-bitwise_xor: ufunc
-cbrt: ufunc
-ceil: ufunc
-conjugate: ufunc
-copysign: ufunc
-cos: ufunc
-cosh: ufunc
-deg2rad: ufunc
-degrees: ufunc
-divmod: ufunc
-equal: ufunc
-exp2: ufunc
-exp: ufunc
-expm1: ufunc
-fabs: ufunc
-float_power: ufunc
-floor: ufunc
-floor_divide: ufunc
-fmax: ufunc
-fmin: ufunc
-fmod: ufunc
-frexp: ufunc
-gcd: ufunc
-greater: ufunc
-greater_equal: ufunc
-heaviside: ufunc
-hypot: ufunc
-invert: ufunc
-isfinite: ufunc
-isinf: ufunc
-isnan: ufunc
-isnat: ufunc
-lcm: ufunc
-ldexp: ufunc
-left_shift: ufunc
-less: ufunc
-less_equal: ufunc
-log10: ufunc
-log1p: ufunc
-log2: ufunc
-log: ufunc
-logaddexp2: ufunc
-logaddexp: ufunc
-logical_and: ufunc
-logical_not: ufunc
-logical_or: ufunc
-logical_xor: ufunc
-matmul: ufunc
-maximum: ufunc
-minimum: ufunc
-modf: ufunc
-multiply: ufunc
-negative: ufunc
-nextafter: ufunc
-not_equal: ufunc
-positive: ufunc
-power: ufunc
-rad2deg: ufunc
-radians: ufunc
-reciprocal: ufunc
-remainder: ufunc
-right_shift: ufunc
-rint: ufunc
-sign: ufunc
-signbit: ufunc
+absolute: ufunc[Literal[1], Literal[1]]
+add: ufunc[Literal[2], Literal[1]]
+arccos: ufunc[Literal[1], Literal[1]]
+arccosh: ufunc[Literal[1], Literal[1]]
+arcsin: ufunc[Literal[1], Literal[1]]
+arcsinh: ufunc[Literal[1], Literal[1]]
+arctan2: ufunc[Literal[2], Literal[1]]
+arctan: ufunc[Literal[1], Literal[1]]
+arctanh: ufunc[Literal[1], Literal[1]]
+bitwise_and: ufunc[Literal[2], Literal[1]]
+bitwise_or: ufunc[Literal[2], Literal[1]]
+bitwise_xor: ufunc[Literal[2], Literal[1]]
+cbrt: ufunc[Literal[1], Literal[1]]
+ceil: ufunc[Literal[1], Literal[1]]
+conjugate: ufunc[Literal[1], Literal[1]]
+copysign: ufunc[Literal[2], Literal[1]]
+cos: ufunc[Literal[1], Literal[1]]
+cosh: ufunc[Literal[1], Literal[1]]
+deg2rad: ufunc[Literal[1], Literal[1]]
+degrees: ufunc[Literal[1], Literal[1]]
+divmod: ufunc[Literal[2], Literal[2]]
+equal: ufunc[Literal[2], Literal[1]]
+exp2: ufunc[Literal[1], Literal[1]]
+exp: ufunc[Literal[1], Literal[1]]
+expm1: ufunc[Literal[1], Literal[1]]
+fabs: ufunc[Literal[1], Literal[1]]
+float_power: ufunc[Literal[2], Literal[1]]
+floor: ufunc[Literal[1], Literal[1]]
+floor_divide: ufunc[Literal[2], Literal[1]]
+fmax: ufunc[Literal[2], Literal[1]]
+fmin: ufunc[Literal[2], Literal[1]]
+fmod: ufunc[Literal[2], Literal[1]]
+frexp: ufunc[Literal[1], Literal[2]]
+gcd: ufunc[Literal[2], Literal[1]]
+greater: ufunc[Literal[2], Literal[1]]
+greater_equal: ufunc[Literal[2], Literal[1]]
+heaviside: ufunc[Literal[2], Literal[1]]
+hypot: ufunc[Literal[2], Literal[1]]
+invert: ufunc[Literal[1], Literal[1]]
+isfinite: ufunc[Literal[1], Literal[1]]
+isinf: ufunc[Literal[1], Literal[1]]
+isnan: ufunc[Literal[1], Literal[1]]
+isnat: ufunc[Literal[1], Literal[1]]
+lcm: ufunc[Literal[2], Literal[1]]
+ldexp: ufunc[Literal[2], Literal[1]]
+left_shift: ufunc[Literal[2], Literal[1]]
+less: ufunc[Literal[2], Literal[1]]
+less_equal: ufunc[Literal[2], Literal[1]]
+log10: ufunc[Literal[1], Literal[1]]
+log1p: ufunc[Literal[1], Literal[1]]
+log2: ufunc[Literal[1], Literal[1]]
+log: ufunc[Literal[1], Literal[1]]
+logaddexp2: ufunc[Literal[2], Literal[1]]
+logaddexp: ufunc[Literal[2], Literal[1]]
+logical_and: ufunc[Literal[2], Literal[1]]
+logical_not: ufunc[Literal[1], Literal[1]]
+logical_or: ufunc[Literal[2], Literal[1]]
+logical_xor: ufunc[Literal[2], Literal[1]]
+matmul: ufunc[Literal[2], Literal[1]]
+maximum: ufunc[Literal[2], Literal[1]]
+minimum: ufunc[Literal[2], Literal[1]]
+modf: ufunc[Literal[1], Literal[2]]
+multiply: ufunc[Literal[2], Literal[1]]
+negative: ufunc[Literal[1], Literal[1]]
+nextafter: ufunc[Literal[2], Literal[1]]
+not_equal: ufunc[Literal[2], Literal[1]]
+positive: ufunc[Literal[1], Literal[1]]
+power: ufunc[Literal[2], Literal[1]]
+rad2deg: ufunc[Literal[1], Literal[1]]
+radians: ufunc[Literal[1], Literal[1]]
+reciprocal: ufunc[Literal[1], Literal[1]]
+remainder: ufunc[Literal[2], Literal[1]]
+right_shift: ufunc[Literal[2], Literal[1]]
+rint: ufunc[Literal[1], Literal[1]]
+sign: ufunc[Literal[1], Literal[1]]
+signbit: ufunc[Literal[1], Literal[1]]
 sin: ufunc[Literal[1], Literal[1]]
-sinh: ufunc
-spacing: ufunc
-sqrt: ufunc
-square: ufunc
-subtract: ufunc
-tan: ufunc
-tanh: ufunc
-true_divide: ufunc
-trunc: ufunc
+sinh: ufunc[Literal[1], Literal[1]]
+spacing: ufunc[Literal[1], Literal[1]]
+sqrt: ufunc[Literal[1], Literal[1]]
+square: ufunc[Literal[1], Literal[1]]
+subtract: ufunc[Literal[2], Literal[1]]
+tan: ufunc[Literal[1], Literal[1]]
+tanh: ufunc[Literal[1], Literal[1]]
+true_divide: ufunc[Literal[2], Literal[1]]
+trunc: ufunc[Literal[1], Literal[1]]
 
 # TODO(shoyer): remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...

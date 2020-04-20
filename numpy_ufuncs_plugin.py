@@ -1,22 +1,19 @@
 from mypy.nodes import ARG_POS
 from mypy.plugin import Plugin
-from mypy.types import CallableType
+import mypy.types
+from mypy.types import CallableType, LiteralType, TupleType, UnionType
 
 
 def ufunc_call_hook(ctx):
-    ufunc_name = ctx.context.callee.name
-
-    type_info = ctx.type.serialize()
-    nin_arg, nout_arg = type_info['args']
-    if nin_arg['.class'] != 'LiteralType':
+    nin_arg, nout_arg = ctx.type.args
+    if not isinstance(nin_arg, LiteralType):
+        # Not a literal; we can't make the signature any more precise.
         return ctx.default_signature
-    if nout_arg['.class'] != 'LiteralType':
+    if not isinstance(nout_arg, LiteralType):
         return ctx.default_signature
+    nin, nout = nin_arg.value, nout_arg.value
 
-    nin = nin_arg['value']
-    nout = nout_arg['value']
-
-    # Strip off the *args and replace it with the correct number of
+    # Strip off *args and replace it with the correct number of
     # positional arguments.
     arg_kinds = [ARG_POS] * nin + ctx.default_signature.arg_kinds[1:]
     arg_names = (
@@ -27,10 +24,18 @@ def ufunc_call_hook(ctx):
         [ctx.default_signature.arg_types[0]] * nin +
         ctx.default_signature.arg_types[1:]
     )
+    ndarray_type, generic_type, _ = ctx.default_signature.ret_type.items
+    scalar_or_ndarray = UnionType([ndarray_type, generic_type])
+    if nout == 1:
+        ret_type = scalar_or_ndarray
+    else:
+        ret_type = TupleType([scalar_or_ndarray] * nout)
+
     return ctx.default_signature.copy_modified(
         arg_kinds=arg_kinds,
         arg_names=arg_names,
         arg_types=arg_types,
+        ret_type=ret_type,
     )
 
 

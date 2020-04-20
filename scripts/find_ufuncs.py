@@ -10,7 +10,9 @@ def main():
 
     ufunc_stubs = []
     for ufunc in set(ufuncs):
-        ufunc_stubs.append(f'{ufunc.__name__}: ufunc')
+        ufunc_stubs.append(
+            f'{ufunc.__name__}: ufunc[Literal[{ufunc.nin}], Literal[{ufunc.nout}]]'
+        )
     ufunc_stubs.sort()
 
     for stub in ufunc_stubs:
