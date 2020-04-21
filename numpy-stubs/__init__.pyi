@@ -3,6 +3,8 @@ import sys
 import datetime as dt
 
 from numpy.core._internal import _ctypes
+from numpy.typing import ArrayLike, DtypeLike, _Shape, _ShapeLike
+
 from typing import (
     Any,
     ByteString,
@@ -36,69 +38,18 @@ else:
     from typing import SupportsBytes
 
 if sys.version_info >= (3, 8):
-    from typing import Literal
+    from typing import Literal, Protocol
 else:
-    from typing_extensions import Literal
+    from typing_extensions import Literal, Protocol
 
 # TODO: remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...
 
-_Shape = Tuple[int, ...]
-
-# Anything that can be coerced to a shape tuple
-_ShapeLike = Union[int, Sequence[int]]
-
-_DtypeLikeNested = Any  # TODO: wait for support for recursive types
-
-# Anything that can be coerced into numpy.dtype.
-# Reference: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-_DtypeLike = Union[
-    dtype,
-    # default data type (float64)
-    None,
-    # array-scalar types and generic types
-    type,  # TODO: enumerate these when we add type hints for numpy scalars
-    # TODO: add a protocol for anything with a dtype attribute
-    # character codes, type strings or comma-separated fields, e.g., 'float64'
-    str,
-    # (flexible_dtype, itemsize)
-    Tuple[_DtypeLikeNested, int],
-    # (fixed_dtype, shape)
-    Tuple[_DtypeLikeNested, _ShapeLike],
-    # [(field_name, field_dtype, field_shape), ...]
-    #
-    # The type here is quite broad because NumPy accepts quite a wide
-    # range of inputs inside the list; see the tests for some
-    # examples.
-    List[Any],
-    # {'names': ..., 'formats': ..., 'offsets': ..., 'titles': ...,
-    #  'itemsize': ...}
-    # TODO: use TypedDict when/if it's officially supported
-    Dict[
-        str,
-        Union[
-            Sequence[str],  # names
-            Sequence[_DtypeLikeNested],  # formats
-            Sequence[int],  # offsets
-            Sequence[Union[bytes, Text, None]],  # titles
-            int,  # itemsize
-        ],
-    ],
-    # {'field1': ..., 'field2': ..., ...}
-    Dict[str, Tuple[_DtypeLikeNested, int]],
-    # (base_dtype, new_dtype)
-    Tuple[_DtypeLikeNested, _DtypeLikeNested],
-]
-
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
-
-_ArrayLike = TypeVar("_ArrayLike")
 
 class dtype:
     names: Optional[Tuple[str, ...]]
-    def __init__(
-        self, obj: _DtypeLike, align: bool = ..., copy: bool = ...
-    ) -> None: ...
+    def __init__(self, obj: DtypeLike, align: bool = ..., copy: bool = ...) -> None: ...
     @property
     def alignment(self) -> int: ...
     @property
@@ -217,6 +168,7 @@ class _ArrayOrScalarCommon(
     def shape(self) -> _Shape: ...
     @property
     def strides(self) -> _Shape: ...
+    def __array__(self, __dtype: DtypeLike = ...) -> ndarray: ...
     def __int__(self) -> int: ...
     def __float__(self) -> float: ...
     def __complex__(self) -> complex: ...
@@ -299,7 +251,7 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def __new__(
         cls,
         shape: Sequence[int],
-        dtype: Union[_DtypeLike, str] = ...,
+        dtype: DtypeLike = ...,
         buffer: _BufferType = ...,
         offset: int = ...,
         strides: _ShapeLike = ...,
@@ -338,7 +290,7 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     def dumps(self) -> bytes: ...
     def astype(
         self,
-        dtype: _DtypeLike,
+        dtype: DtypeLike,
         order: str = ...,
         casting: str = ...,
         subok: bool = ...,
@@ -349,14 +301,14 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     @overload
     def view(self, dtype: Type[_NdArraySubClass]) -> _NdArraySubClass: ...
     @overload
-    def view(self, dtype: _DtypeLike = ...) -> ndarray: ...
+    def view(self, dtype: DtypeLike = ...) -> ndarray: ...
     @overload
     def view(
-        self, dtype: _DtypeLike, type: Type[_NdArraySubClass]
+        self, dtype: DtypeLike, type: Type[_NdArraySubClass]
     ) -> _NdArraySubClass: ...
     @overload
     def view(self, *, type: Type[_NdArraySubClass]) -> _NdArraySubClass: ...
-    def getfield(self, dtype: Union[_DtypeLike, str], offset: int = ...) -> ndarray: ...
+    def getfield(self, dtype: DtypeLike, offset: int = ...) -> ndarray: ...
     def setflags(
         self, write: bool = ..., align: bool = ..., uic: bool = ...
     ) -> None: ...
@@ -501,26 +453,26 @@ class str_(character): ...
 
 def array(
     object: object,
-    dtype: _DtypeLike = ...,
+    dtype: DtypeLike = ...,
     copy: bool = ...,
     subok: bool = ...,
     ndmin: int = ...,
 ) -> ndarray: ...
 def zeros(
-    shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
+    shape: _ShapeLike, dtype: DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
 def ones(
-    shape: _ShapeLike, dtype: _DtypeLike = ..., order: Optional[str] = ...
+    shape: _ShapeLike, dtype: DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
 def zeros_like(
-    a: _ArrayLike,
+    a: ArrayLike,
     dtype: Optional[dtype] = ...,
     order: str = ...,
     subok: bool = ...,
     shape: Optional[Union[int, Sequence[int]]] = ...,
 ) -> ndarray: ...
 def ones_like(
-    a: _ArrayLike,
+    a: ArrayLike,
     dtype: Optional[dtype] = ...,
     order: str = ...,
     subok: bool = ...,
@@ -530,7 +482,7 @@ def full(
     shape: _ShapeLike, fill_value: Any, dtype: Optional[dtype] = ..., order: str = ...
 ) -> ndarray: ...
 def full_like(
-    a: _ArrayLike,
+    a: ArrayLike,
     fill_value: Any,
     dtype: Optional[dtype] = ...,
     order: str = ...,
@@ -538,35 +490,35 @@ def full_like(
     shape: Optional[_ShapeLike] = ...,
 ) -> ndarray: ...
 def count_nonzero(
-    a: _ArrayLike, axis: Optional[Union[int, Tuple[int], Tuple[int, int]]] = ...
+    a: ArrayLike, axis: Optional[Union[int, Tuple[int], Tuple[int, int]]] = ...
 ) -> Union[int, ndarray]: ...
 def isfortran(a: ndarray) -> bool: ...
-def argwhere(a: _ArrayLike) -> ndarray: ...
-def flatnonzero(a: _ArrayLike) -> ndarray: ...
-def correlate(a: _ArrayLike, v: _ArrayLike, mode: str = ...) -> ndarray: ...
-def convolve(a: _ArrayLike, v: _ArrayLike, mode: str = ...) -> ndarray: ...
-def outer(a: _ArrayLike, b: _ArrayLike, out: ndarray = ...) -> ndarray: ...
+def argwhere(a: ArrayLike) -> ndarray: ...
+def flatnonzero(a: ArrayLike) -> ndarray: ...
+def correlate(a: ArrayLike, v: ArrayLike, mode: str = ...) -> ndarray: ...
+def convolve(a: ArrayLike, v: ArrayLike, mode: str = ...) -> ndarray: ...
+def outer(a: ArrayLike, b: ArrayLike, out: ndarray = ...) -> ndarray: ...
 def tensordot(
-    a: _ArrayLike,
-    b: _ArrayLike,
+    a: ArrayLike,
+    b: ArrayLike,
     axes: Union[
         int, Tuple[int, int], Tuple[Tuple[int, int], ...], Tuple[List[int, int], ...]
     ] = ...,
 ) -> ndarray: ...
 def roll(
-    a: _ArrayLike,
+    a: ArrayLike,
     shift: Union[int, Tuple[int, ...]],
     axis: Optional[Union[int, Tuple[int, ...]]] = ...,
 ) -> ndarray: ...
-def rollaxis(a: _ArrayLike, axis: int, start: int = ...) -> ndarray: ...
+def rollaxis(a: ArrayLike, axis: int, start: int = ...) -> ndarray: ...
 def moveaxis(
     a: ndarray,
     source: Union[int, Sequence[int]],
     destination: Union[int, Sequence[int]],
 ) -> ndarray: ...
 def cross(
-    a: _ArrayLike,
-    b: _ArrayLike,
+    a: ArrayLike,
+    b: ArrayLike,
     axisa: int = ...,
     axisb: int = ...,
     axisc: int = ...,
@@ -581,21 +533,21 @@ def binary_repr(num: int, width: Optional[int] = ...) -> str: ...
 def base_repr(number: int, base: int = ..., padding: int = ...) -> str: ...
 def identity(n: int, dtype: Optional[dtype] = ...) -> ndarray: ...
 def allclose(
-    a: _ArrayLike,
-    b: _ArrayLike,
+    a: ArrayLike,
+    b: ArrayLike,
     rtol: float = ...,
     atol: float = ...,
     equal_nan: bool = ...,
 ) -> bool: ...
 def isclose(
-    a: _ArrayLike,
-    b: _ArrayLike,
+    a: ArrayLike,
+    b: ArrayLike,
     rtol: float = ...,
     atol: float = ...,
     equal_nan: bool = ...,
 ) -> Union[bool_, ndarray]: ...
-def array_equal(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
-def array_equiv(a1: _ArrayLike, a2: _ArrayLike) -> bool: ...
+def array_equal(a1: ArrayLike, a2: ArrayLike) -> bool: ...
+def array_equiv(a1: ArrayLike, a2: ArrayLike) -> bool: ...
 
 #
 # Constants
@@ -649,7 +601,7 @@ class ufunc:
     def __name__(self) -> str: ...
     def __call__(
         self,
-        *args: _ArrayLike,
+        *args: ArrayLike,
         out: Optional[Union[ndarray, Tuple[ndarray, ...]]] = ...,
         where: Optional[ndarray] = ...,
         # The list should be a list of tuples of ints, but since we
@@ -664,7 +616,7 @@ class ufunc:
         casting: str = ...,
         # TODO: make this precise when we can use Literal.
         order: Optional[str] = ...,
-        dtype: Optional[_DtypeLike] = ...,
+        dtype: DtypeLike = ...,
         subok: bool = ...,
         signature: Union[str, Tuple[str]] = ...,
         # In reality this should be a length of list 3 containing an
@@ -876,7 +828,7 @@ def take(
 ) -> _ScalarNumpy: ...
 @overload
 def take(
-    a: _ArrayLike,
+    a: ArrayLike,
     indices: int,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
@@ -884,48 +836,48 @@ def take(
 ) -> _ScalarNumpy: ...
 @overload
 def take(
-    a: _ArrayLike,
+    a: ArrayLike,
     indices: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> Union[_ScalarNumpy, ndarray]: ...
-def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
+def reshape(a: ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
 @overload
 def choose(
     a: _ScalarIntOrBool,
-    choices: Union[Sequence[_ArrayLike], ndarray],
+    choices: Union[Sequence[ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> _ScalarIntOrBool: ...
 @overload
 def choose(
     a: _IntOrBool,
-    choices: Union[Sequence[_ArrayLike], ndarray],
+    choices: Union[Sequence[ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> Union[integer, bool_]: ...
 @overload
 def choose(
     a: _ArrayLikeIntOrBool,
-    choices: Union[Sequence[_ArrayLike], ndarray],
+    choices: Union[Sequence[ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> ndarray: ...
 def repeat(
-    a: _ArrayLike, repeats: _ArrayLikeIntOrBool, axis: Optional[int] = ...
+    a: ArrayLike, repeats: _ArrayLikeIntOrBool, axis: Optional[int] = ...
 ) -> ndarray: ...
 def put(
-    a: ndarray, ind: _ArrayLikeIntOrBool, v: _ArrayLike, mode: _Mode = ...
+    a: ndarray, ind: _ArrayLikeIntOrBool, v: ArrayLike, mode: _Mode = ...
 ) -> None: ...
 def swapaxes(
-    a: Union[Sequence[_ArrayLike], ndarray], axis1: int, axis2: int
+    a: Union[Sequence[ArrayLike], ndarray], axis1: int, axis2: int
 ) -> ndarray: ...
 def transpose(
-    a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...
+    a: ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...
 ) -> ndarray: ...
 def partition(
-    a: _ArrayLike,
+    a: ArrayLike,
     kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
@@ -949,20 +901,20 @@ def argpartition(
 ) -> ndarray: ...
 @overload
 def argpartition(
-    a: _ArrayLike,
+    a: ArrayLike,
     kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def sort(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def argsort(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,

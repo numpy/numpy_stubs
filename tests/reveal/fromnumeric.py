@@ -23,12 +23,12 @@ reveal_type(
     np.take(B, 0)  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta]
 )
 reveal_type(
-    np.take(  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta, numpy.ndarray]
+    np.take(  # E: Union[Union[numpy.generic, datetime.datetime, datetime.timedelta], numpy.ndarray]
         A, [0]
     )
 )
 reveal_type(
-    np.take(  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta, numpy.ndarray]
+    np.take(  # E: Union[Union[numpy.generic, datetime.datetime, datetime.timedelta], numpy.ndarray]
         B, [0]
     )
 )
