@@ -1,3 +1,5 @@
+"""Tests for :mod:`numpy.core.fromnumeric`."""
+
 import numpy as np
 
 A = np.array(True, ndmin=2, dtype=bool)
