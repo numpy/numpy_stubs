@@ -53,16 +53,16 @@ np.uint64().shape
 
 # Time structures
 np.datetime64()
-np.datetime64(0, 'D')
-np.datetime64('2019')
-np.datetime64('2019', 'D')
+np.datetime64(0, "D")
+np.datetime64("2019")
+np.datetime64("2019", "D")
 
 np.timedelta64()
 np.timedelta64(0)
-np.timedelta64(0, 'D')
+np.timedelta64(0, "D")
 
-dt_64 = np.datetime64(0, 'D')
-td_64 = np.timedelta64(1, 'h')
+dt_64 = np.datetime64(0, "D")
+td_64 = np.timedelta64(1, "h")
 
 dt_64 + td_64
 dt_64 - dt_64
@@ -70,6 +70,6 @@ dt_64 - td_64
 
 td_64 + td_64
 td_64 - td_64
-td_64 / 1.
+td_64 / 1.0
 td_64 / td_64
 td_64 % td_64

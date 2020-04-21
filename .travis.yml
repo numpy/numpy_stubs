@@ -17,7 +17,7 @@ install:
 
 script:
 - flake8
-- black --check numpy-stubs
+- black --check .
 - py.test
 
 cache:

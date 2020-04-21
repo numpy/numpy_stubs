@@ -6,9 +6,13 @@ from typing import Iterable  # noqa: F401
 
 # Basic checks
 array = np.array([1, 2])
+
+
 def ndarray_func(x):
     # type: (np.ndarray) -> np.ndarray
     return x
+
+
 ndarray_func(np.array([1, 2]))
 array == 1
 array.dtype == float
@@ -21,38 +25,40 @@ ndarray_func(np.ones([1, 2]))
 np.dtype(float)
 np.dtype(np.float64)
 np.dtype(None)
-np.dtype('float64')
+np.dtype("float64")
 np.dtype(np.dtype(float))
-np.dtype(('U', 10))
+np.dtype(("U", 10))
 np.dtype((np.int32, (2, 2)))
 # Define the arguments on the previous line to prevent bidirectional
 # type inference in mypy from broadening the types.
-two_tuples_dtype = [('R', 'u1'), ('G', 'u1'), ('B', 'u1')]
+two_tuples_dtype = [("R", "u1"), ("G", "u1"), ("B", "u1")]
 np.dtype(two_tuples_dtype)
 
-three_tuples_dtype = [('R', 'u1', 1)]
+three_tuples_dtype = [("R", "u1", 1)]
 np.dtype(three_tuples_dtype)
 
-mixed_tuples_dtype = [('R', 'u1'), ('G', np.unicode_, 1)]
+mixed_tuples_dtype = [("R", "u1"), ("G", np.unicode_, 1)]
 np.dtype(mixed_tuples_dtype)
 
-shape_tuple_dtype = [('R', 'u1', (2, 2))]
+shape_tuple_dtype = [("R", "u1", (2, 2))]
 np.dtype(shape_tuple_dtype)
 
-shape_like_dtype = [('R', 'u1', (2, 2)), ('G', np.unicode_, 1)]
+shape_like_dtype = [("R", "u1", (2, 2)), ("G", np.unicode_, 1)]
 np.dtype(shape_like_dtype)
 
-object_dtype = [('field1', object)]
+object_dtype = [("field1", object)]
 np.dtype(object_dtype)
 
-np.dtype({'col1': ('U10', 0), 'col2': ('float32', 10)})
-np.dtype((np.int32, {'real': (np.int16, 0), 'imag': (np.int16, 2)}))
+np.dtype({"col1": ("U10", 0), "col2": ("float32", 10)})
+np.dtype((np.int32, {"real": (np.int16, 0), "imag": (np.int16, 2)}))
 np.dtype((np.int32, (np.int8, 4)))
 
 # Iteration and indexing
 def iterable_func(x):
     # type: (Iterable) -> Iterable
     return x
+
+
 iterable_func(array)
 [element for element in array]
 iter(array)

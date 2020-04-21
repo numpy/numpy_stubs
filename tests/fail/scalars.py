@@ -28,8 +28,8 @@ np.complex64(1, 2)  # E: Too many arguments
 
 np.datetime64(0)  # E: non-matching overload
 
-dt_64 = np.datetime64(0, 'D')
-td_64 = np.timedelta64(1, 'h')
+dt_64 = np.datetime64(0, "D")
+td_64 = np.timedelta64(1, "h")
 
 dt_64 + dt_64  # E: Unsupported operand types
 

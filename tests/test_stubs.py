@@ -26,7 +26,7 @@ def get_test_cases(directory):
                         continue
                     if py_version_number == 3 and skip_py3:
                         continue
-                    py2_arg = ['--py2'] if py_version_number == 2 else []
+                    py2_arg = ["--py2"] if py_version_number == 2 else []
 
                     yield pytest.param(
                         fullpath,
@@ -40,10 +40,7 @@ def get_test_cases(directory):
 def test_success(path, py2_arg):
     stdout, stderr, exitcode = api.run([path] + py2_arg)
     assert exitcode == 0, stdout
-    assert re.match(
-        r'Success: no issues found in \d+ source files?',
-        stdout.strip(),
-    )
+    assert re.match(r"Success: no issues found in \d+ source files?", stdout.strip())
 
 
 @pytest.mark.parametrize("path,py2_arg", get_test_cases(FAIL_DIR))
@@ -58,7 +55,7 @@ def test_fail(path, py2_arg):
     errors = defaultdict(lambda: "")
     error_lines = stdout.rstrip("\n").split("\n")
     assert re.match(
-        r'Found \d+ errors? in \d+ files? \(checked \d+ source files?\)',
+        r"Found \d+ errors? in \d+ files? \(checked \d+ source files?\)",
         error_lines[-1].strip(),
     )
     for error_line in error_lines[:-1]:
@@ -80,7 +77,7 @@ def test_fail(path, py2_arg):
             assert lineno in errors, f'Extra error "{marker}"'
             assert marker in errors[lineno]
         else:
-            pytest.fail(f'Error {repr(errors[lineno])} not found')
+            pytest.fail(f"Error {repr(errors[lineno])} not found")
 
 
 @pytest.mark.parametrize("path,py2_arg", get_test_cases(REVEAL_DIR))

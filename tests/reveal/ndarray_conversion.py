@@ -38,6 +38,7 @@ reveal_type(nd.copy("C"))  # E: numpy.ndarray
 class SubArray(np.ndarray):
     pass
 
+
 reveal_type(nd.view())  # E: numpy.ndarray
 reveal_type(nd.view(np.int64))  # E: numpy.ndarray
 # replace `Any` with `numpy.matrix` when `matrix` will be added to stubs
@@ -51,4 +52,3 @@ reveal_type(nd.getfield(float, 8))  # E: numpy.ndarray
 
 # setflags does not return a value
 # fill does not return a value
-
