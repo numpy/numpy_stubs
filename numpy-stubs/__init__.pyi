@@ -810,17 +810,13 @@ _ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, comp
 _Scalar = Union[_ScalarBuiltin, generic]
 
 # An array-like object consisting of integers
-# TODO: If possible, figure out a better way to deal with nested sequences
 _Int = Union[int, integer]
+_ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
 _ArrayLikeInt = Union[
     _Int,
     ndarray,  # TODO: ndarray[int]
     Sequence[_Int],
-    Sequence[Sequence[_Int]],
-    Sequence[Sequence[Sequence[_Int]]],
-    Sequence[Sequence[Sequence[Sequence[_Int]]]],
-    Sequence[Sequence[Sequence[Sequence[Sequence[_Int]]]]],
-    Sequence[Sequence[Sequence[Sequence[Sequence[Sequence[_Int]]]]]],
+    Sequence[_ArrayLikeIntNested]
 ]
 
 # An array-like object consisting of strings
