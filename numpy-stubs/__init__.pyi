@@ -889,8 +889,7 @@ def swapaxes(
     axis2: int,
 ) -> ndarray: ...
 def transpose(
-    a: _ArrayLike,
-    axes: Union[None, Sequence[int], ndarray] = ...,  # TODO: ndarray[int]
+    a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...  # TODO: ndarray[int]
 ) -> ndarray: ...
 def partition(
     a: _ArrayLike,
