@@ -35,6 +35,11 @@ if sys.version_info[0] < 3:
 else:
     from typing import SupportsBytes
 
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
 # TODO: remove when the full numpy namespace is defined
 def __getattr__(name: str) -> Any: ...
 
@@ -792,3 +797,124 @@ class AxisError(ValueError, IndexError):
     def __init__(
         self, axis: int, ndim: Optional[int] = ..., msg_prefix: Optional[str] = ...
     ) -> None: ...
+
+# Functions from np.core.fromnumeric
+_Mode = Literal["raise", "wrap", "clip"]
+_Order = Literal["C", "F", "A"]
+_PartitionKind = Literal["introselect"]
+_SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
+
+_Generic = TypeVar("_Generic", bound=generic)
+
+# Can't use the SupportsInt protocol here as the ndarray.__int__() method exists
+_ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, complex]
+_Scalar = Union[_ScalarBuiltin, generic]
+
+# An array-like object consisting of integers
+_ArrayLikeInt = Union[
+    int, integer, Sequence[Union[int, integer]], ndarray
+]  # TODO: ndarray[int]
+
+# An array-like object consisting of strings
+_ArrayLikeStr = Union[
+    str, str_, Sequence[Union[str, str_]], ndarray
+]  # TODO: ndarray[str]
+
+# The signature of take() follows a common theme with its overloads:
+# 1. A generic comes in; the same generic comes out
+# 2. A scalar comes in; a generic comes out
+# 3. An array-like object comes in; some keyword ensures that a generic comes out
+# 4. An array-like object comes in; an ndarray or generic comes out
+@overload
+def take(
+    a: _Generic,
+    indices: int,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> _Generic: ...
+@overload
+def take(
+    a: _Scalar,
+    indices: int,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> generic: ...
+@overload
+def take(
+    a: _ArrayLike,
+    indices: int,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> generic: ...
+@overload
+def take(
+    a: _ArrayLike,
+    indices: _ArrayLikeInt,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> Union[generic, ndarray]: ...
+def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
+@overload
+def choose(
+    a: _Generic,
+    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> _Generic: ...
+@overload
+def choose(
+    a: _Scalar,
+    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> generic: ...
+@overload
+def choose(
+    a: _ArrayLike,
+    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    out: Optional[ndarray] = ...,
+    mode: _Mode = ...,
+) -> ndarray: ...
+def repeat(
+    a: _ArrayLike, repeats: _ArrayLikeInt, axis: Optional[int] = ...
+) -> ndarray: ...
+def put(a: ndarray, ind: _ArrayLikeInt, v: _ArrayLike, mode: _Mode = ...) -> None: ...
+def swapaxes(
+    a: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    axis1: int,
+    axis2: int,
+) -> ndarray: ...
+def transpose(
+    a: _ArrayLike,
+    axes: Union[None, Sequence[int], ndarray] = ...,  # TODO: ndarray[int]
+) -> ndarray: ...
+def partition(
+    a: _ArrayLike,
+    kth: _ArrayLikeInt,
+    axis: Optional[int] = ...,
+    kind: _PartitionKind = ...,
+    order: Optional[_ArrayLikeStr] = ...,
+) -> ndarray: ...
+def argpartition(
+    a: _ArrayLike,
+    kth: _ArrayLikeInt,
+    axis: Optional[int] = ...,
+    kind: _PartitionKind = ...,
+    order: Optional[_ArrayLikeStr] = ...,
+) -> ndarray: ...
+def sort(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: Optional[int] = ...,
+    kind: Optional[_SortKind] = ...,
+    order: Optional[_ArrayLikeStr] = ...,
+) -> ndarray: ...
+def argsort(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: Optional[int] = ...,
+    kind: Optional[_SortKind] = ...,
+    order: Optional[_ArrayLikeStr] = ...,
+) -> ndarray: ...
