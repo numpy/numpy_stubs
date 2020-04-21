@@ -804,16 +804,24 @@ _Order = Literal["C", "F", "A"]
 _PartitionKind = Literal["introselect"]
 _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
 
-_Generic = TypeVar("_Generic", bound=generic)
-
-# Can't use the SupportsInt protocol here as the ndarray.__int__() method exists
+# Various annotations for scalars
+_ScalarGeneric = TypeVar("_ScalarGeneric", bound=generic)
 _ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, complex]
 _Scalar = Union[_ScalarBuiltin, generic]
 
 # An array-like object consisting of integers
+# TODO: If possible, figure out a better way to deal with nested sequences
+_Int = Union[int, integer]
 _ArrayLikeInt = Union[
-    int, integer, Sequence[Union[int, integer]], ndarray
-]  # TODO: ndarray[int]
+    _Int,
+    ndarray,  # TODO: ndarray[int]
+    Sequence[_Int],
+    Sequence[Sequence[_Int]],
+    Sequence[Sequence[Sequence[_Int]]],
+    Sequence[Sequence[Sequence[Sequence[_Int]]]],
+    Sequence[Sequence[Sequence[Sequence[Sequence[_Int]]]]],
+    Sequence[Sequence[Sequence[Sequence[Sequence[Sequence[_Int]]]]]],
+]
 
 # An array-like object consisting of strings
 _ArrayLikeStr = Union[
@@ -827,12 +835,12 @@ _ArrayLikeStr = Union[
 # 4. An array-like object comes in; an ndarray or generic comes out
 @overload
 def take(
-    a: _Generic,
+    a: _ScalarGeneric,
     indices: int,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _Generic: ...
+) -> _ScalarGeneric: ...
 @overload
 def take(
     a: _Scalar,
@@ -860,11 +868,11 @@ def take(
 def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
 @overload
 def choose(
-    a: _Generic,
+    a: _ScalarGeneric,
     choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _Generic: ...
+) -> _ScalarGeneric: ...
 @overload
 def choose(
     a: _Scalar,
