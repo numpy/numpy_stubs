@@ -813,10 +813,7 @@ _Scalar = Union[_ScalarBuiltin, generic]
 _Int = Union[int, integer]
 _ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
 _ArrayLikeInt = Union[
-    _Int,
-    ndarray,  # TODO: ndarray[int]
-    Sequence[_Int],
-    Sequence[_ArrayLikeIntNested]
+    _Int, ndarray, Sequence[_Int], Sequence[_ArrayLikeIntNested]  # TODO: ndarray[int]
 ]
 
 # An array-like object consisting of strings
