@@ -6,3 +6,6 @@ venv
 .idea
 *~
 **~
+
+# MacOS
+.DS_Store
