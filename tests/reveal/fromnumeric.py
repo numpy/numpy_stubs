@@ -13,11 +13,25 @@ c = 1.0
 
 reveal_type(np.take(a, 0))  # E: numpy.bool_
 reveal_type(np.take(b, 0))  # E: numpy.float32
-reveal_type(np.take(c, 0))  # E: numpy.generic
-reveal_type(np.take(A, 0))  # E: numpy.generic
-reveal_type(np.take(B, 0))  # E: numpy.generic
-reveal_type(np.take(A, [0]))  # E: Union[numpy.generic, numpy.ndarray]
-reveal_type(np.take(B, [0]))  # E: Union[numpy.generic, numpy.ndarray]
+reveal_type(
+    np.take(c, 0)  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta]
+)
+reveal_type(
+    np.take(A, 0)  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta]
+)
+reveal_type(
+    np.take(B, 0)  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta]
+)
+reveal_type(
+    np.take(  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta, numpy.ndarray]
+        A, [0]
+    )
+)
+reveal_type(
+    np.take(  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta, numpy.ndarray]
+        B, [0]
+    )
+)
 
 reveal_type(np.reshape(a, 1))  # E: numpy.ndarray
 reveal_type(np.reshape(b, 1))  # E: numpy.ndarray
@@ -27,7 +41,11 @@ reveal_type(np.reshape(B, 1))  # E: numpy.ndarray
 
 reveal_type(np.choose(a, [True]))  # E: numpy.bool_
 reveal_type(np.choose(b, [1.0]))  # E: numpy.float32
-reveal_type(np.choose(c, [1.0]))  # E: numpy.generic
+reveal_type(
+    np.choose(  # E: Union[numpy.generic, datetime.datetime, datetime.timedelta]
+        c, [1.0]
+    )
+)
 reveal_type(np.choose(A, [True]))  # E: numpy.ndarray
 reveal_type(np.choose(B, [1.0]))  # E: numpy.ndarray
 

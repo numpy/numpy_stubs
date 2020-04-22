@@ -805,21 +805,22 @@ _PartitionKind = Literal["introselect"]
 _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
 
 # Various annotations for scalars
-_ScalarGeneric = TypeVar("_ScalarGeneric", bound=generic)
+
+# While dt.datetime and dt.timedelta are not technically part of NumPy,
+# they are one of the rare few builtin scalars which serve as valid return types.
+# See https://github.com/numpy/numpy-stubs/pull/67#discussion_r412604113.
+_ScalarNumpy = Union[generic, dt.datetime, dt.timedelta]
 _ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, complex]
-_Scalar = Union[_ScalarBuiltin, generic]
+_Scalar = Union[_ScalarBuiltin, _ScalarNumpy]
+
+_ScalarGeneric = TypeVar(
+    "_ScalarGeneric", bound=Union[dt.datetime, dt.timedelta, generic]
+)
 
 # An array-like object consisting of integers
 _Int = Union[int, integer]
 _ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
-_ArrayLikeInt = Union[
-    _Int, ndarray, Sequence[_Int], Sequence[_ArrayLikeIntNested]  # TODO: ndarray[int]
-]
-
-# An array-like object consisting of strings
-_ArrayLikeStr = Union[
-    str, str_, Sequence[Union[str, str_]], ndarray
-]  # TODO: ndarray[str]
+_ArrayLikeInt = Union[_Int, ndarray, Sequence[_Int], Sequence[_ArrayLikeIntNested]]
 
 # The signature of take() follows a common theme with its overloads:
 # 1. A generic comes in; the same generic comes out
@@ -841,7 +842,7 @@ def take(
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> generic: ...
+) -> _ScalarNumpy: ...
 @overload
 def take(
     a: _ArrayLike,
@@ -849,7 +850,7 @@ def take(
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> generic: ...
+) -> _ScalarNumpy: ...
 @overload
 def take(
     a: _ArrayLike,
@@ -857,26 +858,26 @@ def take(
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> Union[generic, ndarray]: ...
+) -> Union[_ScalarNumpy, ndarray]: ...
 def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
 @overload
 def choose(
     a: _ScalarGeneric,
-    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> _ScalarGeneric: ...
 @overload
 def choose(
     a: _Scalar,
-    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> generic: ...
+) -> _ScalarNumpy: ...
 @overload
 def choose(
     a: _ArrayLike,
-    choices: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
+    choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> ndarray: ...
@@ -885,36 +886,34 @@ def repeat(
 ) -> ndarray: ...
 def put(a: ndarray, ind: _ArrayLikeInt, v: _ArrayLike, mode: _Mode = ...) -> None: ...
 def swapaxes(
-    a: Union[Sequence[_ArrayLike], ndarray],  # TODO: ndarray[_ArrayLike]
-    axis1: int,
-    axis2: int,
+    a: Union[Sequence[_ArrayLike], ndarray], axis1: int, axis2: int
 ) -> ndarray: ...
 def transpose(
-    a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...  # TODO: ndarray[int]
+    a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...
 ) -> ndarray: ...
 def partition(
     a: _ArrayLike,
     kth: _ArrayLikeInt,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
-    order: Optional[_ArrayLikeStr] = ...,
+    order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def argpartition(
     a: _ArrayLike,
     kth: _ArrayLikeInt,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
-    order: Optional[_ArrayLikeStr] = ...,
+    order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def sort(
     a: Union[Sequence[_ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
-    order: Optional[_ArrayLikeStr] = ...,
+    order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def argsort(
     a: Union[Sequence[_ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
-    order: Optional[_ArrayLikeStr] = ...,
+    order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
