@@ -13,35 +13,35 @@ STUBS_ROOT = os.path.dirname(os.path.abspath(__file__))
 # Technically "public" functions (they don't start with an underscore)
 # that we don't want to include.
 BLACKLIST = {
-    'numpy': {
+    "numpy": {
         # Stdlib modules in the namespace by accident
-        'absolute_import',
-        'warnings',
+        "absolute_import",
+        "warnings",
         # Accidentally public
-        'add_docstring',
-        'add_newdoc',
-        'add_newdoc_ufunc',
+        "add_docstring",
+        "add_newdoc",
+        "add_newdoc_ufunc",
         # Builtins
-        'bool',
-        'complex',
-        'float',
-        'int',
-        'long',
-        'object',
-        'str',
-        'unicode',
+        "bool",
+        "complex",
+        "float",
+        "int",
+        "long",
+        "object",
+        "str",
+        "unicode",
         # Should use numpy_financial instead
-        'fv',
-        'ipmt',
-        'irr',
-        'mirr',
-        'nper',
-        'npv',
-        'pmt',
-        'ppmt',
-        'pv',
-        'rate',
-    },
+        "fv",
+        "ipmt",
+        "irr",
+        "mirr",
+        "nper",
+        "npv",
+        "pmt",
+        "ppmt",
+        "pv",
+        "rate",
+    }
 }
 
 
@@ -60,7 +60,7 @@ class FindAttributes(ast.NodeVisitor):
         self.attributes = set()
 
     def visit_FunctionDef(self, node):
-        if node.name == '__getattr__':
+        if node.name == "__getattr__":
             # Not really a module member.
             return
         self.attributes.add(node.name)
@@ -69,7 +69,7 @@ class FindAttributes(ast.NodeVisitor):
         return
 
     def visit_ClassDef(self, node):
-        if not node.name.startswith('_'):
+        if not node.name.startswith("_"):
             self.attributes.add(node.name)
         return
 
@@ -80,14 +80,13 @@ class FindAttributes(ast.NodeVisitor):
 def find_missing(module_name):
     module_path = os.path.join(
         STUBS_ROOT,
-        module_name.replace('numpy', 'numpy-stubs').replace('.', os.sep),
-        '__init__.pyi',
+        module_name.replace("numpy", "numpy-stubs").replace(".", os.sep),
+        "__init__.pyi",
     )
 
     module = importlib.import_module(module_name)
     module_attributes = {
-        attribute for attribute in dir(module)
-        if not attribute.startswith('_')
+        attribute for attribute in dir(module) if not attribute.startswith("_")
     }
 
     if os.path.isfile(module_path):
@@ -103,7 +102,7 @@ def find_missing(module_name):
     blacklist = BLACKLIST.get(module_name, set())
 
     missing = module_attributes - stubs_attributes - blacklist
-    print('\n'.join(sorted(missing)))
+    print("\n".join(sorted(missing)))
 
 
 def run_pytest(argv):
@@ -117,7 +116,7 @@ def run_pytest(argv):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--find-missing')
+    parser.add_argument("--find-missing")
     args, remaining_argv = parser.parse_known_args()
 
     if args.find_missing is not None:
