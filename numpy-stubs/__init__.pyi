@@ -901,7 +901,7 @@ def repeat(
 ) -> ndarray: ...
 def put(a: ndarray, ind: _ArrayLikeInt, v: _ArrayLike, mode: _Mode = ...) -> None: ...
 def swapaxes(
-    a: Union[Sequence[_ArrayLike], ndarray], axis1: int, axis2: int
+    a: Union[Sequence[_ArrayLikeNested], ndarray], axis1: int, axis2: int
 ) -> ndarray: ...
 def transpose(
     a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...
@@ -975,14 +975,14 @@ def argmin(
 ) -> Union[integer, ndarray]: ...
 @overload
 def searchsorted(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_Scalar], ndarray],
     v: _Scalar,
     side: _Side = ...,
     sorter: Union[None, Sequence[_Int], ndarray] = ...,  # 1D int array
 ) -> integer: ...
 @overload
 def searchsorted(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_Scalar], ndarray],
     v: _ArrayLike,
     side: _Side = ...,
     sorter: Union[None, Sequence[_Int], ndarray] = ...,  # 1D int array
