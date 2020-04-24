@@ -794,8 +794,8 @@ _ScalarGenericDT = TypeVar(
 _Int = Union[int, integer]
 _Bool = Union[bool, bool_]
 _IntOrBool = Union[_Int, _Bool]
-_ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
-_ArrayLikeBoolNested = Any  # TODO: wait for support for recursive types
+_ArrayLikeIntNested = ArrayLike  # TODO: wait for support for recursive types
+_ArrayLikeBoolNested = ArrayLike  # TODO: wait for support for recursive types
 
 # Integers and booleans can generally be used interchangeably
 _ArrayLikeIntOrBool = Union[
@@ -922,67 +922,67 @@ def argsort(
 ) -> ndarray: ...
 @overload
 def argmax(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: None = ...,
     out: Optional[ndarray] = ...,
 ) -> integer: ...
 @overload
 def argmax(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: int = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[integer, ndarray]: ...
 @overload
 def argmin(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: None = ...,
     out: Optional[ndarray] = ...,
 ) -> integer: ...
 @overload
 def argmin(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     axis: int = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[integer, ndarray]: ...
 @overload
 def searchsorted(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[ArrayLike], ndarray],
     v: _Scalar,
     side: _Side = ...,
     sorter: Union[None, Sequence[_IntOrBool], ndarray] = ...,  # 1D int array
 ) -> integer: ...
 @overload
 def searchsorted(
-    a: Union[Sequence[_ArrayLike], ndarray],
-    v: _ArrayLike,
+    a: Union[Sequence[ArrayLike], ndarray],
+    v: ArrayLike,
     side: _Side = ...,
     sorter: Union[None, Sequence[_IntOrBool], ndarray] = ...,  # 1D int array
 ) -> ndarray: ...
-def resize(a: _ArrayLike, new_shape: _ShapeLike) -> ndarray: ...
+def resize(a: ArrayLike, new_shape: _ShapeLike) -> ndarray: ...
 @overload
 def squeeze(a: _ScalarGeneric, axis: Optional[_ShapeLike] = ...) -> _ScalarGeneric: ...
 @overload
-def squeeze(a: _ArrayLike, axis: Optional[_ShapeLike] = ...) -> ndarray: ...
+def squeeze(a: ArrayLike, axis: Optional[_ShapeLike] = ...) -> ndarray: ...
 def diagonal(
-    a: Union[Sequence[Sequence[_ArrayLike]], ndarray],  # >= 2D array
+    a: Union[Sequence[Sequence[ArrayLike]], ndarray],  # >= 2D array
     offset: int = ...,
     axis1: int = ...,
     axis2: int = ...,
 ) -> ndarray: ...
 def trace(
-    a: Union[Sequence[Sequence[_ArrayLike]], ndarray],  # >= 2D array
+    a: Union[Sequence[Sequence[ArrayLike]], ndarray],  # >= 2D array
     offset: int = ...,
     axis1: int = ...,
     axis2: int = ...,
     dtype: _DtypeLike = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[number, ndarray]: ...
-def ravel(a: _ArrayLike, order: _Order = ...) -> ndarray: ...
-def nonzero(a: _ArrayLike) -> Tuple[ndarray, ...]: ...
-def shape(a: _ArrayLike) -> _Shape: ...
+def ravel(a: ArrayLike, order: _Order = ...) -> ndarray: ...
+def nonzero(a: ArrayLike) -> Tuple[ndarray, ...]: ...
+def shape(a: ArrayLike) -> _Shape: ...
 def compress(
     condition: Union[Sequence[_Bool], ndarray],  # 1D bool array
-    a: _ArrayLike,
+    a: ArrayLike,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
 ) -> ndarray: ...
