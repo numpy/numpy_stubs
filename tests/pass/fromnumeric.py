@@ -60,3 +60,60 @@ np.sort(B, 0)
 
 np.argsort(A, 0)
 np.argsort(B, 0)
+
+np.argmax(A)
+np.argmax(B)
+np.argmax(A, axis=0)
+np.argmax(B, axis=0)
+
+np.argmin(A)
+np.argmin(B)
+np.argmin(A, axis=0)
+np.argmin(B, axis=0)
+
+np.searchsorted(A[0], 0)
+np.searchsorted(B[0], 0)
+np.searchsorted(A[0], [0])
+np.searchsorted(B[0], [0])
+
+np.resize(a, (5, 5))
+np.resize(b, (5, 5))
+np.resize(c, (5, 5))
+np.resize(A, (5, 5))
+np.resize(B, (5, 5))
+
+np.squeeze(a)
+np.squeeze(b)
+np.squeeze(c)
+np.squeeze(A)
+np.squeeze(B)
+
+np.diagonal(A)
+np.diagonal(B)
+
+np.trace(A)
+np.trace(B)
+
+np.ravel(a)
+np.ravel(b)
+np.ravel(c)
+np.ravel(A)
+np.ravel(B)
+
+np.nonzero(a)
+np.nonzero(b)
+np.nonzero(c)
+np.nonzero(A)
+np.nonzero(B)
+
+np.shape(a)
+np.shape(b)
+np.shape(c)
+np.shape(A)
+np.shape(B)
+
+np.compress([True], a)
+np.compress([True], b)
+np.compress([True], c)
+np.compress([True], A)
+np.compress([True], B)

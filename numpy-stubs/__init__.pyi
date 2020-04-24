@@ -772,6 +772,7 @@ _Mode = Literal["raise", "wrap", "clip"]
 _Order = Literal["C", "F", "A"]
 _PartitionKind = Literal["introselect"]
 _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
+_Side = Literal["left", "right"]
 
 # Various annotations for scalars
 
@@ -918,4 +919,70 @@ def argsort(
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
+) -> ndarray: ...
+@overload
+def argmax(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+) -> integer: ...
+@overload
+def argmax(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: int = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[integer, ndarray]: ...
+@overload
+def argmin(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+) -> integer: ...
+@overload
+def argmin(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: int = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[integer, ndarray]: ...
+@overload
+def searchsorted(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    v: _Scalar,
+    side: _Side = ...,
+    sorter: Union[None, Sequence[_IntOrBool], ndarray] = ...,  # 1D int array
+) -> integer: ...
+@overload
+def searchsorted(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    v: _ArrayLike,
+    side: _Side = ...,
+    sorter: Union[None, Sequence[_IntOrBool], ndarray] = ...,  # 1D int array
+) -> ndarray: ...
+def resize(a: _ArrayLike, new_shape: _ShapeLike) -> ndarray: ...
+@overload
+def squeeze(a: _ScalarGeneric, axis: Optional[_ShapeLike] = ...) -> _ScalarGeneric: ...
+@overload
+def squeeze(a: _ArrayLike, axis: Optional[_ShapeLike] = ...) -> ndarray: ...
+def diagonal(
+    a: Union[Sequence[Sequence[_ArrayLike]], ndarray],  # >= 2D array
+    offset: int = ...,
+    axis1: int = ...,
+    axis2: int = ...,
+) -> ndarray: ...
+def trace(
+    a: Union[Sequence[Sequence[_ArrayLike]], ndarray],  # >= 2D array
+    offset: int = ...,
+    axis1: int = ...,
+    axis2: int = ...,
+    dtype: _DtypeLike = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[number, ndarray]: ...
+def ravel(a: _ArrayLike, order: _Order = ...) -> ndarray: ...
+def nonzero(a: _ArrayLike) -> Tuple[ndarray, ...]: ...
+def shape(a: _ArrayLike) -> _Shape: ...
+def compress(
+    condition: Union[Sequence[_Bool], ndarray],  # 1D bool array
+    a: _ArrayLike,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
 ) -> ndarray: ...

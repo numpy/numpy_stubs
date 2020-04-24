@@ -62,3 +62,40 @@ np.argsort(a)  # E: Argument 1 to "argsort" has incompatible type
 np.argsort(A, axis="bob")  # E: Argument "axis" to "argsort" has incompatible type
 np.argsort(A, kind="bob")  # E: Argument "kind" to "argsort" has incompatible type
 np.argsort(A, order=range(5))  # E: Argument "order" to "argsort" has incompatible type
+
+np.argmax(a)  # E: No overload variant of "argmax" matches argument type
+np.argmax(A, axis="bob")  # E: No overload variant of "argmax" matches argument type
+np.argmax(A, kind="bob")  # E: No overload variant of "argmax" matches argument type
+
+np.argmin(a)  # E: No overload variant of "argmin" matches argument type
+np.argmin(A, axis="bob")  # E: No overload variant of "argmin" matches argument type
+np.argmin(A, kind="bob")  # E: No overload variant of "argmin" matches argument type
+
+np.searchsorted(a, 0)  # E: No overload variant of "searchsorted" matches argument type
+np.searchsorted(  # E: No overload variant of "searchsorted" matches argument type
+    A[0], 0, side="bob"
+)
+np.searchsorted(  # E: No overload variant of "searchsorted" matches argument type
+    A[0], 0, sorter=1.0
+)
+
+np.resize(A, 1.0)  # E: Argument 2 to "resize" has incompatible type
+
+np.squeeze(A, 1.0)  # E: No overload variant of "squeeze" matches argument type
+
+np.diagonal(a)  # E: Argument 1 to "diagonal" has incompatible type
+np.diagonal(A, offset=None)  # E: Argument "offset" to "diagonal" has incompatible type
+np.diagonal(A, axis1="bob")  # E: Argument "axis1" to "diagonal" has incompatible type
+np.diagonal(A, axis2=[])  # E: Argument "axis2" to "diagonal" has incompatible type
+
+np.trace(a)  # E: Argument 1 to "trace" has incompatible type
+np.trace(A, offset=None)  # E: Argument "offset" to "trace" has incompatible type
+np.trace(A, axis1="bob")  # E: Argument "axis1" to "trace" has incompatible type
+np.trace(A, axis2=[])  # E: Argument "axis2" to "trace" has incompatible type
+
+np.ravel(a, order="bob")  # E: Argument "order" to "ravel" has incompatible type
+
+np.compress(True, A)  # E: Argument 1 to "compress" has incompatible type
+np.compress(
+    [True], A, axis=1.0  # E: Argument "axis" to "compress" has incompatible type
+)

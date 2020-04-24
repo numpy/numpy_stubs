@@ -76,3 +76,60 @@ reveal_type(np.sort(B, 0))  # E: numpy.ndarray
 
 reveal_type(np.argsort(A, 0))  # E: numpy.ndarray
 reveal_type(np.argsort(B, 0))  # E: numpy.ndarray
+
+reveal_type(np.argmax(A))  # E: numpy.integer
+reveal_type(np.argmax(B))  # E: numpy.integer
+reveal_type(np.argmax(A, axis=0))  # E: Union[numpy.integer, numpy.ndarray]
+reveal_type(np.argmax(B, axis=0))  # E: Union[numpy.integer, numpy.ndarray]
+
+reveal_type(np.argmin(A))  # E: numpy.integer
+reveal_type(np.argmin(B))  # E: numpy.integer
+reveal_type(np.argmin(A, axis=0))  # E: Union[numpy.integer, numpy.ndarray]
+reveal_type(np.argmin(B, axis=0))  # E: Union[numpy.integer, numpy.ndarray]
+
+reveal_type(np.searchsorted(A[0], 0))  # E: numpy.integer
+reveal_type(np.searchsorted(B[0], 0))  # E: numpy.integer
+reveal_type(np.searchsorted(A[0], [0]))  # E: numpy.ndarray
+reveal_type(np.searchsorted(B[0], [0]))  # E: numpy.ndarray
+
+reveal_type(np.resize(a, (5, 5)))  # E: numpy.ndarray
+reveal_type(np.resize(b, (5, 5)))  # E: numpy.ndarray
+reveal_type(np.resize(c, (5, 5)))  # E: numpy.ndarray
+reveal_type(np.resize(A, (5, 5)))  # E: numpy.ndarray
+reveal_type(np.resize(B, (5, 5)))  # E: numpy.ndarray
+
+reveal_type(np.squeeze(a))  # E: numpy.bool_
+reveal_type(np.squeeze(b))  # E: numpy.float32
+reveal_type(np.squeeze(c))  # E: numpy.ndarray
+reveal_type(np.squeeze(A))  # E: numpy.ndarray
+reveal_type(np.squeeze(B))  # E: numpy.ndarray
+
+reveal_type(np.diagonal(A))  # E: numpy.ndarray
+reveal_type(np.diagonal(B))  # E: numpy.ndarray
+
+reveal_type(np.trace(A))  # E: Union[numpy.number, numpy.ndarray]
+reveal_type(np.trace(B))  # E: Union[numpy.number, numpy.ndarray]
+
+reveal_type(np.ravel(a))  # E: numpy.ndarray
+reveal_type(np.ravel(b))  # E: numpy.ndarray
+reveal_type(np.ravel(c))  # E: numpy.ndarray
+reveal_type(np.ravel(A))  # E: numpy.ndarray
+reveal_type(np.ravel(B))  # E: numpy.ndarray
+
+reveal_type(np.nonzero(a))  # E: tuple[numpy.ndarray]
+reveal_type(np.nonzero(b))  # E: tuple[numpy.ndarray]
+reveal_type(np.nonzero(c))  # E: tuple[numpy.ndarray]
+reveal_type(np.nonzero(A))  # E: tuple[numpy.ndarray]
+reveal_type(np.nonzero(B))  # E: tuple[numpy.ndarray]
+
+reveal_type(np.shape(a))  # E: tuple[builtins.int]
+reveal_type(np.shape(b))  # E: tuple[builtins.int]
+reveal_type(np.shape(c))  # E: tuple[builtins.int]
+reveal_type(np.shape(A))  # E: tuple[builtins.int]
+reveal_type(np.shape(B))  # E: tuple[builtins.int]
+
+reveal_type(np.compress([True], a))  # E: numpy.ndarray
+reveal_type(np.compress([True], b))  # E: numpy.ndarray
+reveal_type(np.compress([True], c))  # E: numpy.ndarray
+reveal_type(np.compress([True], A))  # E: numpy.ndarray
+reveal_type(np.compress([True], B))  # E: numpy.ndarray
