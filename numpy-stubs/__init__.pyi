@@ -938,38 +938,38 @@ def argpartition(
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def sort(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def argsort(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 @overload
 def argmax(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: None = ...,
     out: Optional[ndarray] = ...,
 ) -> integer: ...
 @overload
 def argmax(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: int = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[integer, ndarray]: ...
 @overload
 def argmin(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: None = ...,
     out: Optional[ndarray] = ...,
 ) -> integer: ...
 @overload
 def argmin(
-    a: Union[Sequence[_ArrayLike], ndarray],
+    a: Union[Sequence[_ArrayLikeNested], ndarray],
     axis: int = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[integer, ndarray]: ...
