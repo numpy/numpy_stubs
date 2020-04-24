@@ -93,6 +93,7 @@ _DtypeLike = Union[
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
 
 _ArrayLike = TypeVar("_ArrayLike")
+_ArrayLikeNested = Any  # TODO: wait for support for recursive types
 
 class dtype:
     names: Optional[Tuple[str, ...]]
@@ -803,6 +804,7 @@ _Mode = Literal["raise", "wrap", "clip"]
 _Order = Literal["C", "F", "A"]
 _PartitionKind = Literal["introselect"]
 _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
+_Side = Literal["left", "right"]
 
 # Various annotations for scalars
 
@@ -813,14 +815,27 @@ _ScalarNumpy = Union[generic, dt.datetime, dt.timedelta]
 _ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, complex]
 _Scalar = Union[_ScalarBuiltin, _ScalarNumpy]
 
-_ScalarGeneric = TypeVar(
-    "_ScalarGeneric", bound=Union[dt.datetime, dt.timedelta, generic]
+# Integers and booleans can generally be used interchangeably
+_ScalarInt = TypeVar("_ScalarInt", bound=Union[integer, bool_])
+_ScalarGeneric = TypeVar("_ScalarGeneric", bound=generic)
+_ScalarGenericPlus = TypeVar(
+    "_ScalarGenericPlus", bound=Union[dt.datetime, dt.timedelta, generic]
 )
 
 # An array-like object consisting of integers
-_Int = Union[int, integer]
+_Int = Union[int, integer, bool, bool_]
+_Bool = Union[bool, bool_]
 _ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
-_ArrayLikeInt = Union[_Int, ndarray, Sequence[_Int], Sequence[_ArrayLikeIntNested]]
+_ArrayLikeBoolNested = Any  # TODO: wait for support for recursive types
+
+# Integers and booleans can generally be used interchangeably
+_ArrayLikeInt = Union[
+    _Int,
+    ndarray,
+    Sequence[_Int],
+    Sequence[_ArrayLikeIntNested],
+    Sequence[_ArrayLikeBoolNested],
+]
 
 # The signature of take() follows a common theme with its overloads:
 # 1. A generic comes in; the same generic comes out
@@ -829,12 +844,12 @@ _ArrayLikeInt = Union[_Int, ndarray, Sequence[_Int], Sequence[_ArrayLikeIntNeste
 # 4. An array-like object comes in; an ndarray or generic comes out
 @overload
 def take(
-    a: _ScalarGeneric,
+    a: _ScalarGenericPlus,
     indices: int,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _ScalarGeneric: ...
+) -> _ScalarGenericPlus: ...
 @overload
 def take(
     a: _Scalar,
@@ -862,21 +877,21 @@ def take(
 def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
 @overload
 def choose(
-    a: _ScalarGeneric,
+    a: _ScalarInt,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _ScalarGeneric: ...
+) -> _ScalarInt: ...
 @overload
 def choose(
-    a: _Scalar,
+    a: _Int,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _ScalarNumpy: ...
+) -> Union[integer, bool_]: ...
 @overload
 def choose(
-    a: _ArrayLike,
+    a: _ArrayLikeInt,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
@@ -898,6 +913,23 @@ def partition(
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
+@overload
+def argpartition(
+    a: generic,
+    kth: _ArrayLikeInt,
+    axis: Optional[int] = ...,
+    kind: _PartitionKind = ...,
+    order: Union[None, str, Sequence[str]] = ...,
+) -> integer: ...
+@overload
+def argpartition(
+    a: _ScalarBuiltin,
+    kth: _ArrayLikeInt,
+    axis: Optional[int] = ...,
+    kind: _PartitionKind = ...,
+    order: Union[None, str, Sequence[str]] = ...,
+) -> ndarray: ...
+@overload
 def argpartition(
     a: _ArrayLike,
     kth: _ArrayLikeInt,
@@ -916,4 +948,70 @@ def argsort(
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
+) -> ndarray: ...
+@overload
+def argmax(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+) -> integer: ...
+@overload
+def argmax(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: int = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[integer, ndarray]: ...
+@overload
+def argmin(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: None = ...,
+    out: Optional[ndarray] = ...,
+) -> integer: ...
+@overload
+def argmin(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    axis: int = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[integer, ndarray]: ...
+@overload
+def searchsorted(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    v: _Scalar,
+    side: _Side = ...,
+    sorter: Union[None, Sequence[_Int], ndarray] = ...,  # 1D int array
+) -> integer: ...
+@overload
+def searchsorted(
+    a: Union[Sequence[_ArrayLike], ndarray],
+    v: _ArrayLike,
+    side: _Side = ...,
+    sorter: Union[None, Sequence[_Int], ndarray] = ...,  # 1D int array
+) -> ndarray: ...
+def resize(a: _ArrayLike, new_shape: _ShapeLike) -> ndarray: ...
+@overload
+def squeeze(a: _ScalarGeneric, axis: Optional[_ShapeLike] = ...) -> _ScalarGeneric: ...
+@overload
+def squeeze(a: _ArrayLike, axis: Optional[_ShapeLike] = ...) -> ndarray: ...
+def diagonal(
+    a: Union[Sequence[Sequence[_ArrayLikeNested]], ndarray],  # >= 2D array
+    offset: int = ...,
+    axis1: int = ...,
+    axis2: int = ...,
+) -> ndarray: ...
+def trace(
+    a: Union[Sequence[Sequence[_ArrayLikeNested]], ndarray],  # >= 2D array
+    offset: int = ...,
+    axis1: int = ...,
+    axis2: int = ...,
+    dtype: _DtypeLike = ...,
+    out: Optional[ndarray] = ...,
+) -> Union[number, ndarray]: ...
+def ravel(a: _ArrayLike, order: _Order = ...) -> ndarray: ...
+def nonzero(a: _ArrayLike) -> Tuple[ndarray, ...]: ...
+def shape(a: _ArrayLike) -> _Shape: ...
+def compress(
+    condition: Union[Sequence[_Bool], ndarray],  # 1D bool array
+    a: _ArrayLike,
+    axis: Optional[int] = ...,
+    out: Optional[ndarray] = ...,
 ) -> ndarray: ...
