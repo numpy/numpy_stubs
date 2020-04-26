@@ -93,7 +93,6 @@ _DtypeLike = Union[
 _NdArraySubClass = TypeVar("_NdArraySubClass", bound=ndarray)
 
 _ArrayLike = TypeVar("_ArrayLike")
-_ArrayLikeNested = Any  # TODO: wait for support for recursive types
 
 class dtype:
     names: Optional[Tuple[str, ...]]
@@ -901,7 +900,7 @@ def repeat(
 ) -> ndarray: ...
 def put(a: ndarray, ind: _ArrayLikeInt, v: _ArrayLike, mode: _Mode = ...) -> None: ...
 def swapaxes(
-    a: Union[Sequence[_ArrayLikeNested], ndarray], axis1: int, axis2: int
+    a: Union[Sequence[_ArrayLike], ndarray], axis1: int, axis2: int
 ) -> ndarray: ...
 def transpose(
     a: _ArrayLike, axes: Union[None, Sequence[int], ndarray] = ...
@@ -938,13 +937,13 @@ def argpartition(
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def sort(
-    a: Union[Sequence[_ArrayLikeNested], ndarray],
+    a: Union[Sequence[_ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
 ) -> ndarray: ...
 def argsort(
-    a: Union[Sequence[_ArrayLikeNested], ndarray],
+    a: Union[Sequence[_ArrayLike], ndarray],
     axis: Optional[int] = ...,
     kind: Optional[_SortKind] = ...,
     order: Union[None, str, Sequence[str]] = ...,
