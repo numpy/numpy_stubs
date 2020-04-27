@@ -803,7 +803,6 @@ _Mode = Literal["raise", "wrap", "clip"]
 _Order = Literal["C", "F", "A"]
 _PartitionKind = Literal["introselect"]
 _SortKind = Literal["quicksort", "mergesort", "heapsort", "stable"]
-_Side = Literal["left", "right"]
 
 # Various annotations for scalars
 
