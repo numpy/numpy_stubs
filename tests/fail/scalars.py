@@ -38,9 +38,11 @@ td_64 / dt_64  # E: No overload
 td_64 % 1  # E: Unsupported operand types
 td_64 % dt_64  # E: Unsupported operand types
 
+
 class A:
     def __float__(self):
         return 1.0
+
 
 np.int8(A())  # E: incompatible type
 np.int16(A())  # E: incompatible type
