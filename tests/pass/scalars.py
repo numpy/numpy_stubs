@@ -20,7 +20,6 @@ np.int8(4)
 np.int16(3.4)
 np.int32(4)
 np.int64(-1)
-np.uint8(A())
 np.uint32()
 
 np.float16(A())
