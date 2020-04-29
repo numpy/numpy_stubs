@@ -7,9 +7,14 @@ class C:
         return 3j
 
 
+class B:
+    def __int__(self):
+        return 4
+
+
 class A:
     def __float__(self):
-        return 4
+        return 4.0
 
 
 np.complex32(3)
@@ -20,6 +25,7 @@ np.int8(4)
 np.int16(3.4)
 np.int32(4)
 np.int64(-1)
+np.uint8(B())
 np.uint32()
 
 np.float16(A())
