@@ -814,10 +814,10 @@ _ScalarBuiltin = Union[str, bytes, dt.date, dt.timedelta, bool, int, float, comp
 _Scalar = Union[_ScalarBuiltin, _ScalarNumpy]
 
 # Integers and booleans can generally be used interchangeably
-_ScalarInt = TypeVar("_ScalarInt", bound=Union[integer, bool_])
+_ScalarIntOrBool = TypeVar("_ScalarIntOrBool", bound=Union[integer, bool_])
 _ScalarGeneric = TypeVar("_ScalarGeneric", bound=generic)
-_ScalarGenericPlus = TypeVar(
-    "_ScalarGenericPlus", bound=Union[dt.datetime, dt.timedelta, generic]
+_ScalarGenericDT = TypeVar(
+    "_ScalarGenericDT", bound=Union[dt.datetime, dt.timedelta, generic]
 )
 
 # An array-like object consisting of integers
@@ -827,11 +827,11 @@ _ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
 _ArrayLikeBoolNested = Any  # TODO: wait for support for recursive types
 
 # Integers and booleans can generally be used interchangeably
-_ArrayLikeInt = Union[
+_ArrayLikeIntOrBool = Union[
     _Int,
     ndarray,
     Sequence[_Int],
-    Sequence[_ArrayLikeIntNested],
+    Sequence[_ArrayLikeIntOrBoolNested],
     Sequence[_ArrayLikeBoolNested],
 ]
 
@@ -842,12 +842,12 @@ _ArrayLikeInt = Union[
 # 4. An array-like object comes in; an ndarray or generic comes out
 @overload
 def take(
-    a: _ScalarGenericPlus,
+    a: _ScalarGenericDT,
     indices: int,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _ScalarGenericPlus: ...
+) -> _ScalarGenericDT: ...
 @overload
 def take(
     a: _Scalar,
@@ -867,7 +867,7 @@ def take(
 @overload
 def take(
     a: _ArrayLike,
-    indices: _ArrayLikeInt,
+    indices: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
@@ -875,11 +875,11 @@ def take(
 def reshape(a: _ArrayLike, newshape: _ShapeLike, order: _Order = ...) -> ndarray: ...
 @overload
 def choose(
-    a: _ScalarInt,
+    a: _ScalarIntOrBool,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
-) -> _ScalarInt: ...
+) -> _ScalarIntOrBool: ...
 @overload
 def choose(
     a: _Int,
@@ -889,15 +889,17 @@ def choose(
 ) -> Union[integer, bool_]: ...
 @overload
 def choose(
-    a: _ArrayLikeInt,
+    a: _ArrayLikeIntOrBool,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
 ) -> ndarray: ...
 def repeat(
-    a: _ArrayLike, repeats: _ArrayLikeInt, axis: Optional[int] = ...
+    a: _ArrayLike, repeats: _ArrayLikeIntOrBool, axis: Optional[int] = ...
 ) -> ndarray: ...
-def put(a: ndarray, ind: _ArrayLikeInt, v: _ArrayLike, mode: _Mode = ...) -> None: ...
+def put(
+    a: ndarray, ind: _ArrayLikeIntOrBool, v: _ArrayLike, mode: _Mode = ...
+) -> None: ...
 def swapaxes(
     a: Union[Sequence[_ArrayLike], ndarray], axis1: int, axis2: int
 ) -> ndarray: ...
@@ -906,7 +908,7 @@ def transpose(
 ) -> ndarray: ...
 def partition(
     a: _ArrayLike,
-    kth: _ArrayLikeInt,
+    kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
@@ -914,7 +916,7 @@ def partition(
 @overload
 def argpartition(
     a: generic,
-    kth: _ArrayLikeInt,
+    kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
@@ -922,7 +924,7 @@ def argpartition(
 @overload
 def argpartition(
     a: _ScalarBuiltin,
-    kth: _ArrayLikeInt,
+    kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
@@ -930,7 +932,7 @@ def argpartition(
 @overload
 def argpartition(
     a: _ArrayLike,
-    kth: _ArrayLikeInt,
+    kth: _ArrayLikeIntOrBool,
     axis: Optional[int] = ...,
     kind: _PartitionKind = ...,
     order: Union[None, str, Sequence[str]] = ...,
