@@ -821,16 +821,17 @@ _ScalarGenericDT = TypeVar(
 )
 
 # An array-like object consisting of integers
-_Int = Union[int, integer, bool, bool_]
+_Int = Union[int, integer]
 _Bool = Union[bool, bool_]
+_IntOrBool = Union[_Int, _Bool]
 _ArrayLikeIntNested = Any  # TODO: wait for support for recursive types
 _ArrayLikeBoolNested = Any  # TODO: wait for support for recursive types
 
 # Integers and booleans can generally be used interchangeably
 _ArrayLikeIntOrBool = Union[
-    _Int,
+    _IntOrBool,
     ndarray,
-    Sequence[_Int],
+    Sequence[_IntOrBool],
     Sequence[_ArrayLikeIntNested],
     Sequence[_ArrayLikeBoolNested],
 ]
@@ -882,7 +883,7 @@ def choose(
 ) -> _ScalarIntOrBool: ...
 @overload
 def choose(
-    a: _Int,
+    a: _IntOrBool,
     choices: Union[Sequence[_ArrayLike], ndarray],
     out: Optional[ndarray] = ...,
     mode: _Mode = ...,
