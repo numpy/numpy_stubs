@@ -831,7 +831,7 @@ _ArrayLikeIntOrBool = Union[
     _Int,
     ndarray,
     Sequence[_Int],
-    Sequence[_ArrayLikeIntOrBoolNested],
+    Sequence[_ArrayLikeIntNested],
     Sequence[_ArrayLikeBoolNested],
 ]
 
