@@ -132,7 +132,7 @@ class _flagsobj:
     def __getitem__(self, key: str) -> bool: ...
     def __setitem__(self, key: str, value: bool) -> None: ...
 
-_FlatIterSelf = TypeVar('_FlatIterSelf', bound=flatiter)
+_FlatIterSelf = TypeVar("_FlatIterSelf", bound=flatiter)
 
 class flatiter(Generic[_ArraySelf], Iterator[generic]):
     @property
