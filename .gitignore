@@ -9,3 +9,6 @@ venv
 
 # MacOS
 .DS_Store
+
+# Visual studio code
+.vscode/
