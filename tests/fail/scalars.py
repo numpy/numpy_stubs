@@ -52,3 +52,16 @@ np.uint8(A())  # E: incompatible type
 np.uint16(A())  # E: incompatible type
 np.uint32(A())  # E: incompatible type
 np.uint64(A())  # E: incompatible type
+
+np.void("test")  # E: incompatible type
+
+np.generic(1)  # E: Cannot instantiate abstract class
+np.number(1)  # E: Cannot instantiate abstract class
+np.integer(1)  # E: Cannot instantiate abstract class
+np.signedinteger(1)  # E: Cannot instantiate abstract class
+np.unsignedinteger(1)  # E: Cannot instantiate abstract class
+np.inexact(1)  # E: Cannot instantiate abstract class
+np.floating(1)  # E: Cannot instantiate abstract class
+np.complexfloating(1)  # E: Cannot instantiate abstract class
+np.character("test")  # E: Cannot instantiate abstract class
+np.flexible(b"test")  # E: Cannot instantiate abstract class

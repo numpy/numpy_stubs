@@ -19,6 +19,8 @@ class A:
 
 np.complex64(3j)
 np.complex64(C())
+np.complex128(3j)
+np.complex128(C())
 
 np.int8(4)
 np.int16(3.4)
@@ -77,3 +79,8 @@ td_64 - td_64
 td_64 / 1.0
 td_64 / td_64
 td_64 % td_64
+
+np.void(1)
+np.void(np.int64(1))
+np.void(b"test")
+np.void(np.bytes_("test"))
