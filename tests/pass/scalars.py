@@ -82,5 +82,7 @@ td_64 % td_64
 
 np.void(1)
 np.void(np.int64(1))
+np.void(True)
+np.void(np.bool_(True))
 np.void(b"test")
 np.void(np.bytes_("test"))
