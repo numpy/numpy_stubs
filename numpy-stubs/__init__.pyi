@@ -466,25 +466,25 @@ def ones(
 ) -> ndarray: ...
 def zeros_like(
     a: ArrayLike,
-    dtype: Optional[dtype] = ...,
+    dtype: DtypeLike = ...,
     order: str = ...,
     subok: bool = ...,
     shape: Optional[Union[int, Sequence[int]]] = ...,
 ) -> ndarray: ...
 def ones_like(
     a: ArrayLike,
-    dtype: Optional[dtype] = ...,
+    dtype: DtypeLike = ...,
     order: str = ...,
     subok: bool = ...,
     shape: Optional[_ShapeLike] = ...,
 ) -> ndarray[int]: ...
 def full(
-    shape: _ShapeLike, fill_value: Any, dtype: Optional[dtype] = ..., order: str = ...
+    shape: _ShapeLike, fill_value: Any, dtype: DtypeLike = ..., order: str = ...
 ) -> ndarray: ...
 def full_like(
     a: ArrayLike,
     fill_value: Any,
-    dtype: Optional[dtype] = ...,
+    dtype: DtypeLike = ...,
     order: str = ...,
     subok: bool = ...,
     shape: Optional[_ShapeLike] = ...,
@@ -531,7 +531,7 @@ def fromfunction(function: Callable, shape: Tuple[int, int], **kwargs) -> Any: .
 def isscalar(element: Any) -> bool: ...
 def binary_repr(num: int, width: Optional[int] = ...) -> str: ...
 def base_repr(number: int, base: int = ..., padding: int = ...) -> str: ...
-def identity(n: int, dtype: Optional[dtype] = ...) -> ndarray: ...
+def identity(n: int, dtype: DtypeLike = ...) -> ndarray: ...
 def allclose(
     a: ArrayLike,
     b: ArrayLike,
