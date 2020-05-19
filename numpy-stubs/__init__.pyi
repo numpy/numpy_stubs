@@ -974,7 +974,7 @@ def trace(
     offset: int = ...,
     axis1: int = ...,
     axis2: int = ...,
-    dtype: _DtypeLike = ...,
+    dtype: DtypeLike = ...,
     out: Optional[ndarray] = ...,
 ) -> Union[number, ndarray]: ...
 def ravel(a: ArrayLike, order: _Order = ...) -> ndarray: ...
