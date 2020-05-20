@@ -53,6 +53,14 @@ np.dtype({"col1": ("U10", 0), "col2": ("float32", 10)})
 np.dtype((np.int32, {"real": (np.int16, 0), "imag": (np.int16, 2)}))
 np.dtype((np.int32, (np.int8, 4)))
 
+# Dtype comparision
+np.dtype(float) == float
+np.dtype(float) != np.float64
+np.dtype(float) < None
+np.dtype(float) <= "float64"
+np.dtype(float) > np.dtype(float)
+np.dtype(float) >= np.dtype(("U", 10))
+
 # Iteration and indexing
 def iterable_func(x):
     # type: (Iterable) -> Iterable
