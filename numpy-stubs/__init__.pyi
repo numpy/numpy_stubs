@@ -15,7 +15,6 @@ from typing import (
     Generic,
     IO,
     Iterable,
-    Iterator,
     List,
     Mapping,
     Optional,
@@ -134,7 +133,7 @@ class _flagsobj:
 
 _FlatIterSelf = TypeVar("_FlatIterSelf", bound=flatiter)
 
-class flatiter(Generic[_ArraySelf], Iterator[generic]):
+class flatiter(Generic[_ArraySelf]):
     @property
     def base(self) -> _ArraySelf: ...
     @property
@@ -252,11 +251,11 @@ _BufferType = Union[ndarray, bytes, bytearray, memoryview]
 class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
     @property
     def real(self: _ArraySelf) -> _ArraySelf: ...
-    @property
+    @real.setter
     def real(self, value: ArrayLike) -> None: ...
     @property
     def imag(self: _ArraySelf) -> _ArraySelf: ...
-    @property
+    @imag.setter
     def imag(self, value: ArrayLike) -> None: ...
     def __new__(
         cls: Type[_ArraySelf],
