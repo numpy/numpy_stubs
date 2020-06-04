@@ -20,6 +20,11 @@ array.dtype == float
 # Array creation routines checks
 ndarray_func(np.zeros([1, 2]))
 ndarray_func(np.ones([1, 2]))
+ndarray_func(np.empty([1, 2]))
+
+ndarray_func(np.zeros_like(array))
+ndarray_func(np.ones_like(array))
+ndarray_func(np.empty_like(array))
 
 # Dtype construction
 np.dtype(float)

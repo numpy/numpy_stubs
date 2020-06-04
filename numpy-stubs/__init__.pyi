@@ -483,6 +483,9 @@ def zeros(
 def ones(
     shape: _ShapeLike, dtype: DtypeLike = ..., order: Optional[str] = ...
 ) -> ndarray: ...
+def empty(
+    shape: _ShapeLike, dtype: DtypeLike = ..., order: Optional[str] = ...
+) -> ndarray: ...
 def zeros_like(
     a: ArrayLike,
     dtype: DtypeLike = ...,
@@ -491,6 +494,13 @@ def zeros_like(
     shape: Optional[Union[int, Sequence[int]]] = ...,
 ) -> ndarray: ...
 def ones_like(
+    a: ArrayLike,
+    dtype: DtypeLike = ...,
+    order: str = ...,
+    subok: bool = ...,
+    shape: Optional[_ShapeLike] = ...,
+) -> ndarray[int]: ...
+def empty_like(
     a: ArrayLike,
     dtype: DtypeLike = ...,
     order: str = ...,
