@@ -365,6 +365,7 @@ class ndarray(_ArrayOrScalarCommon, Iterable, Sized, Container):
 # the creation of `np.generic` instances.
 # The `# type: ignore` comments are necessary to silence mypy errors regarding
 # the missing `ABCMeta` metaclass.
+
 # See https://github.com/numpy/numpy-stubs/pull/80 for more details.
 
 class generic(_ArrayOrScalarCommon):
