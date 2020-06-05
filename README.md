@@ -2,15 +2,14 @@
 
 [![Build Status](https://travis-ci.org/numpy/numpy-stubs.svg?branch=master)](https://travis-ci.org/numpy/numpy-stubs)
 
+**We are currently focused on moving these type stubs into the
+NumPy main repo. We look forward to your contributions once the
+migration is complete!**
+
 This repository exists for developing [PEP 484](https://www.python.org/dev/peps/pep-0484/)
 compatible typing annotations for [NumPy](https://github.com/numpy/numpy).
 
-It will be released as a separate "numpy-stubs" package on PyPI per [PEP
-561](https://www.python.org/dev/peps/pep-0561/). This will let us iterate
-rapidly on experimental type annotations without coupling to NumPy's release
-cycle.
-
-The plan (help wanted!):
+The plan:
 
 1. Write basic type stubs for `numpy.ndarray` without dtypes or shapes.
 2. Add support for dtypes in ndarray type-annotations.
@@ -22,6 +21,3 @@ The plan (help wanted!):
 3. Add support for shapes in ndarray type-annotations.
    - This will first require defining a broader (Python wide) standard for
      typing array shapes, and likely entail writing a PEP.
-
-Eventually, once development has stabilized, we expect to merge these type stubs
-into the main NumPy repository.
