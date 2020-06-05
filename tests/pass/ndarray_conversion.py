@@ -29,7 +29,7 @@ nd.tobytes("C")
 nd.tobytes(None)
 
 # tofile
-if os.name != 'nt':
+if os.name != "nt":
     with tempfile.NamedTemporaryFile(suffix=".txt") as tmp:
         nd.tofile(tmp.name)
         nd.tofile(tmp.name, "")
