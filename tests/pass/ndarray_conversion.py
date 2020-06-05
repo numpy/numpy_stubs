@@ -1,3 +1,4 @@
+import os
 import tempfile
 
 import numpy as np
@@ -28,15 +29,16 @@ nd.tobytes("C")
 nd.tobytes(None)
 
 # tofile
-with tempfile.NamedTemporaryFile(suffix=".txt") as tmp:
-    nd.tofile(tmp.name)
-    nd.tofile(tmp.name, "")
-    nd.tofile(tmp.name, sep="")
+if os.name != 'nt':
+    with tempfile.NamedTemporaryFile(suffix=".txt") as tmp:
+        nd.tofile(tmp.name)
+        nd.tofile(tmp.name, "")
+        nd.tofile(tmp.name, sep="")
 
-    nd.tofile(tmp.name, "", "%s")
-    nd.tofile(tmp.name, format="%s")
+        nd.tofile(tmp.name, "", "%s")
+        nd.tofile(tmp.name, format="%s")
 
-    nd.tofile(tmp)
+        nd.tofile(tmp)
 
 # dump is pretty simple
 # dumps is pretty simple
