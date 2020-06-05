@@ -29,8 +29,6 @@ BLACKLIST = {
         "get_array_wrap",
         "int_asbuffer",
         "oldnumeric",
-        "recfromcsv",
-        "recfromtxt",
         "safe_eval",
         "set_numeric_ops",
         "test",
