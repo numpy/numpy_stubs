@@ -1,7 +1,7 @@
 import builtins
 import sys
 import datetime as dt
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 
 from numpy.core._internal import _ctypes
 from numpy.typing import ArrayLike, DtypeLike, _Shape, _ShapeLike
